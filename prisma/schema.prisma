@@ -72,7 +72,8 @@ model Department {
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
-    users User[]
+    users  User[]
+    stages ProcessTemplateStage[]
 }
 
 model Position {
@@ -87,6 +88,7 @@ model Position {
 
 model Enum {
     id        Int      @id @default(autoincrement())
+    name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
@@ -141,14 +143,15 @@ model ProcessTemplateField {
 
 model ProcessTemplateStage {
     id        Int      @id @default(autoincrement())
+    name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
     template   ProcessTemplate @relation(fields: [templateId], references: [id])
     templateId Int
 
-    responsibleByPosition   Position @relation(fields: [responsibleByPositionId], references: [id])
-    responsibleByPositionId Int
+    responsibleByPositions   Position[]
+    responsibleByDepartments Department[]
 
     templateStart ProcessTemplate? @relation("startStage")
     templateEnd   ProcessTemplate? @relation("endStage")

@@ -1,5 +1,12 @@
-import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { processTemplateRouter } from "./routers/process-template";
+import { processTemplateFieldRouter } from "./routers/process-template-field";
+import { enumRouter } from "./routers/enum";
+import { enumItemRouter } from "./routers/enum-item";
+import { positionRouter } from "./routers/position";
+import { processTemplateStageRouter } from "./routers/process-template-stage";
+import { processTemplateStageFieldRouter } from "./routers/process-template-stage-field";
+import { processTemplateStageFlowRouter } from "./routers/process-template-stage-flow";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +14,14 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+  enum: enumRouter,
+  enumItem: enumItemRouter,
+  position: positionRouter,
+  processTemplate: processTemplateRouter,
+  processTemplateField: processTemplateFieldRouter,
+  processTemplateStage: processTemplateStageRouter,
+  processTemplateStageField: processTemplateStageFieldRouter,
+  processTemplateStageFlow: processTemplateStageFlowRouter,
 });
 
 // export type definition of API
