@@ -1,5 +1,11 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+enum FieldType {
+    STRING
+    NUMBER
+    BOOLEAN
+    ENUM
+}
 
 generator client {
     provider = "prisma-client-js"
@@ -14,22 +20,9 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
+    id                Int     @id @default(autoincrement())
     type              String
     provider          String
     providerAccountId String
@@ -41,27 +34,17 @@ model Account {
     id_token          String? // @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId            Int
 
     @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           Int      @id @default(autoincrement())
     sessionToken String   @unique
-    userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    userId       Int
 }
 
 model VerificationToken {
@@ -70,4 +53,200 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model User {
+    id            Int          @id @default(autoincrement())
+    name          String?
+    email         String?      @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    departments   Department[]
+    positions     Position[]
+}
+
+model Department {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    users User[]
+}
+
+model Position {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    users  User[]
+    stages ProcessTemplateStage[]
+}
+
+model Enum {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    items  EnumItem[]
+    fields ProcessTemplateField[]
+}
+
+model EnumItem {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    enum   Enum @relation(fields: [enumId], references: [id])
+    enumId Int
+}
+
+model ProcessTemplate {
+    id         Int      @id @default(autoincrement())
+    name       String
+    isArchived Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now()) @updatedAt
+
+    startStage   ProcessTemplateStage? @relation("startStage", fields: [startStageId], references: [id])
+    startStageId Int?                  @unique
+
+    endStage   ProcessTemplateStage? @relation("endStage", fields: [endStageId], references: [id])
+    endStageId Int?                  @unique
+
+    stages    ProcessTemplateStage[]
+    fields    ProcessTemplateField[]
+    processes Process[]
+}
+
+model ProcessTemplateField {
+    id        Int       @id @default(autoincrement())
+    name      String
+    type      FieldType @default(STRING)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @default(now()) @updatedAt
+
+    enum   Enum? @relation(fields: [enumId], references: [id])
+    enumId Int?
+
+    template   ProcessTemplate @relation(fields: [templateId], references: [id])
+    templateId Int
+
+    stageFields   ProcessTemplateStageField[]
+    processFields ProcessField[]
+}
+
+model ProcessTemplateStage {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    template   ProcessTemplate @relation(fields: [templateId], references: [id])
+    templateId Int
+
+    responsibleByPosition   Position @relation(fields: [responsibleByPositionId], references: [id])
+    responsibleByPositionId Int
+
+    templateStart ProcessTemplate? @relation("startStage")
+    templateEnd   ProcessTemplate? @relation("endStage")
+
+    fields        ProcessTemplateStageField[]
+    flowsFrom     ProcessTemplateStageFlow[]  @relation("flowsFrom")
+    flowsTo       ProcessTemplateStageFlow[]  @relation("flowsTo")
+    processStages ProcessStage[]
+}
+
+model ProcessTemplateStageField {
+    id          Int      @id @default(autoincrement())
+    name        String
+    placeholder String?
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now()) @updatedAt
+
+    templateField   ProcessTemplateField? @relation(fields: [templateFieldId], references: [id])
+    templateFieldId Int?
+
+    stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
+    stageId Int
+
+    flows              ProcessTemplateStageFlow[]
+    processStageFields ProcessStageField[]
+}
+
+model ProcessTemplateStageFlow {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    fromStage   ProcessTemplateStage @relation("flowsFrom", fields: [fromStageId], references: [id])
+    fromStageId Int
+
+    toStage   ProcessTemplateStage @relation("flowsTo", fields: [toStageId], references: [id])
+    toStageId Int
+
+    stageField   ProcessTemplateStageField? @relation(fields: [stageFieldId], references: [id])
+    stageFieldId Int?
+
+    stageFieldValue String?
+}
+
+model Process {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    currentStage   ProcessStage @relation("currentStage", fields: [currentStageId], references: [id])
+    currentStageId Int          @unique
+
+    template   ProcessTemplate @relation(fields: [templateId], references: [id])
+    templateId Int
+
+    fields ProcessField[]
+    stages ProcessStage[]
+}
+
+model ProcessField {
+    id        Int      @id @default(autoincrement())
+    value     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    templateField   ProcessTemplateField @relation(fields: [templateFieldId], references: [id])
+    templateFieldId Int
+
+    process   Process @relation(fields: [processId], references: [id], onDelete: Cascade)
+    processId Int
+}
+
+model ProcessStage {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    templateStage   ProcessTemplateStage @relation(fields: [templateStageId], references: [id])
+    templateStageId Int
+
+    process   Process @relation(fields: [processId], references: [id], onDelete: Cascade)
+    processId Int
+
+    processCurrentStage Process? @relation("currentStage")
+
+    ProcessStageField ProcessStageField[]
+}
+
+model ProcessStageField {
+    id        Int      @id @default(autoincrement())
+    value     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    templateStageField   ProcessTemplateStageField @relation(fields: [templateStageFieldId], references: [id])
+    templateStageFieldId Int
+
+    stage   ProcessStage @relation(fields: [stageId], references: [id])
+    stageId Int
 }
