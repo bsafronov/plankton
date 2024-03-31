@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { sleep } from "~/shared/lib/utils";
 
-const createSchema = z.object({
+export const createSchema = z.object({
   name: z.string().min(1, "Обязательное поле"),
 });
 
@@ -60,6 +61,7 @@ export const processTemplateRouter = createTRPCRouter({
   findMany: publicProcedure
     .input(findManySchema)
     .query(async ({ ctx, input }) => {
+      await sleep(2000);
       const { page = 1, take = 50 } = input;
 
       return ctx.db.processTemplate.findMany({

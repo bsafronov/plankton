@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "~/shared/lib/trpc/react";
 import { ThemeProvider } from "~/shared/ui/theme-provider";
 import "./globals.css";
 import { Toaster } from "~/shared/ui/sonner";
+import { cn } from "~/shared/lib/utils";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -23,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={cn("min-h-screen font-sans", inter.variable)}>
         <TRPCReactProvider>
           <ThemeProvider>
             <Toaster />

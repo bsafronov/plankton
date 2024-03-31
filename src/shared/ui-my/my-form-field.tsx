@@ -1,3 +1,5 @@
+"use client";
+
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import type {
   ControllerRenderProps,
@@ -23,8 +25,8 @@ type MyFormFieldProps<
   ComponentPropsWithoutRef<typeof FormField<TFieldValues, TName>>,
   "control" | "name"
 > & {
-  label?: string | null;
-  description?: string | null;
+  label?: string;
+  description?: string;
   className?: string;
   placement?: MyFormFieldPlacement;
   required?: boolean;

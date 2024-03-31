@@ -35,7 +35,7 @@ export const MyBreadcrumb = ({ items, className }: Props) => {
   };
 
   return (
-    <Breadcrumb className={cn("mb-8", className)}>
+    <Breadcrumb className={cn("border-b px-4 py-2", className)}>
       <BreadcrumbList>
         {items.map((item, i) => (
           <Fragment key={i}>

@@ -33,7 +33,9 @@ export const MyCard = ({
           <CardDescription>{description}</CardDescription>
         </CardHeader>
       )}
-      <CardContent className={classNameContent}>{children}</CardContent>
+      {children && (
+        <CardContent className={classNameContent}>{children}</CardContent>
+      )}
       {footer && <CardFooter className={classNameFooter}>{footer}</CardFooter>}
     </Card>
   );
