@@ -1,32 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const createSchema = z.object({
-  stageId: z.number(),
-  name: z.string().min(1, "Обязательное поле"),
-  description: z.string().optional(),
-  placeholder: z.string().optional(),
-  templateFieldId: z.number().optional(),
-});
-
-const updateSchema = z.object({
-  id: z.number(),
-  name: z.string().min(1, "Обязательное поле"),
-  description: z.string().optional(),
-  placeholder: z.string().optional(),
-  templateFieldId: z.number().optional(),
-});
-
-const findManySchema = z.object({
-  take: z.number().optional(),
-  page: z.number().optional(),
-  templateId: z.number().optional(),
-  stageId: z.number().optional(),
-});
+import {
+  createProcessTemplateStageFieldSchema,
+  findManyProcessTemplateStageFieldSchema,
+  updateProcessTemplateStageFieldSchema,
+} from "~/entities/process-template/lib/schema";
 
 export const processTemplateStageFieldRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createSchema)
+    .input(createProcessTemplateStageFieldSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, stageId, description, placeholder, templateFieldId } =
         input;
@@ -42,7 +24,7 @@ export const processTemplateStageFieldRouter = createTRPCRouter({
       });
     }),
   update: publicProcedure
-    .input(updateSchema)
+    .input(updateProcessTemplateStageFieldSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, id, description, placeholder, templateFieldId } = input;
 
@@ -75,7 +57,7 @@ export const processTemplateStageFieldRouter = createTRPCRouter({
       });
     }),
   findMany: publicProcedure
-    .input(findManySchema)
+    .input(findManyProcessTemplateStageFieldSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50, templateId, stageId } = input;
 

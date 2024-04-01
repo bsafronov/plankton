@@ -1,29 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const createSchema = z.object({
-  name: z.string().min(1, "Обязательное поле"),
-  type: z.enum(["STRING", "NUMBER", "BOOLEAN", "ENUM"]),
-  enumId: z.number().nullable(),
-  templateId: z.number(),
-});
-
-const updateSchema = z.object({
-  id: z.number(),
-  name: z.string().min(1, "Обязательное поле"),
-  type: z.enum(["STRING", "NUMBER", "BOOLEAN", "ENUM"]).optional(),
-  enumId: z.number().optional(),
-});
-
-const findManySchema = z.object({
-  templateId: z.number().optional(),
-  take: z.number().optional(),
-  page: z.number().optional(),
-});
+import {
+  createProcessTemplateFieldSchema,
+  findManyProcessTemplateFieldSchema,
+  updateProcessTemplateFieldSchema,
+} from "~/entities/process-template/lib/schema";
 
 export const processTemplateFieldRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createSchema)
+    .input(createProcessTemplateFieldSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, type, enumId, templateId } = input;
 
@@ -37,7 +22,7 @@ export const processTemplateFieldRouter = createTRPCRouter({
       });
     }),
   update: publicProcedure
-    .input(updateSchema)
+    .input(updateProcessTemplateFieldSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, id, enumId, type } = input;
 
@@ -69,7 +54,7 @@ export const processTemplateFieldRouter = createTRPCRouter({
       });
     }),
   findMany: publicProcedure
-    .input(findManySchema)
+    .input(findManyProcessTemplateFieldSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50, templateId } = input;
 

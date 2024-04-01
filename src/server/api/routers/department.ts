@@ -1,29 +1,29 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import {
-  createPositionSchema,
-  findManyPositionSchema,
-  updatePositionSchema,
-} from "~/entities/position/lib/schema";
+  createDepartmentSchema,
+  updateDepartmentSchema,
+  findManyDepartmentSchema,
+} from "~/entities/department/lib/schema";
 
-export const positionRouter = createTRPCRouter({
+export const departmentRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createPositionSchema)
+    .input(createDepartmentSchema)
     .mutation(async ({ ctx, input }) => {
       const { name } = input;
 
-      return ctx.db.position.create({
+      return ctx.db.department.create({
         data: {
           name,
         },
       });
     }),
   update: publicProcedure
-    .input(updatePositionSchema)
+    .input(updateDepartmentSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, id } = input;
 
-      return ctx.db.position.update({
+      return ctx.db.department.update({
         where: {
           id,
         },
@@ -33,7 +33,7 @@ export const positionRouter = createTRPCRouter({
       });
     }),
   delete: publicProcedure.input(z.number()).mutation(async ({ ctx, input }) => {
-    return ctx.db.position.delete({
+    return ctx.db.department.delete({
       where: {
         id: input,
       },
@@ -42,18 +42,18 @@ export const positionRouter = createTRPCRouter({
   findUnique: publicProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
-      return ctx.db.position.findUnique({
+      return ctx.db.department.findUnique({
         where: {
           id: input,
         },
       });
     }),
   findMany: publicProcedure
-    .input(findManyPositionSchema)
+    .input(findManyDepartmentSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50 } = input;
 
-      return ctx.db.position.findMany({
+      return ctx.db.department.findMany({
         skip: page * take - take,
         take: take,
       });

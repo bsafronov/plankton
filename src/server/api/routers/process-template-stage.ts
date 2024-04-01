@@ -1,25 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const createSchema = z.object({
-  name: z.string().min(1, "Обязательное поле"),
-  templateId: z.number(),
-});
-
-const updateSchema = z.object({
-  id: z.number(),
-  name: z.string().min(1, "Обязательное поле"),
-});
-
-const findManySchema = z.object({
-  take: z.number().optional(),
-  page: z.number().optional(),
-  templateId: z.number().optional(),
-});
+import {
+  createProcessTemplateStageSchema,
+  findManyProcessTemplateStageSchema,
+  updateProcessTemplateStageSchema,
+} from "~/entities/process-template/lib/schema";
 
 export const processTemplateStageRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createSchema)
+    .input(createProcessTemplateStageSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, templateId } = input;
 
@@ -31,7 +20,7 @@ export const processTemplateStageRouter = createTRPCRouter({
       });
     }),
   update: publicProcedure
-    .input(updateSchema)
+    .input(updateProcessTemplateStageSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, id } = input;
 
@@ -61,7 +50,7 @@ export const processTemplateStageRouter = createTRPCRouter({
       });
     }),
   findMany: publicProcedure
-    .input(findManySchema)
+    .input(findManyProcessTemplateStageSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50, templateId } = input;
 

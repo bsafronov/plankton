@@ -1,25 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const createSchema = z.object({
-  name: z.string().min(1, "Обязательное поле"),
-  enumId: z.number(),
-});
-
-const updateSchema = z.object({
-  id: z.number(),
-  name: z.string().min(1, "Обязательное поле"),
-});
-
-const findManySchema = z.object({
-  take: z.number().optional(),
-  page: z.number().optional(),
-  enumId: z.number().optional(),
-});
+import {
+  createEnumItemSchema,
+  findManyEnumItemSchema,
+  updateEnumItemSchema,
+} from "~/entities/enum/lib/schema";
 
 export const enumItemRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createSchema)
+    .input(createEnumItemSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, enumId } = input;
 
@@ -31,7 +20,7 @@ export const enumItemRouter = createTRPCRouter({
       });
     }),
   update: publicProcedure
-    .input(updateSchema)
+    .input(updateEnumItemSchema)
     .mutation(async ({ ctx, input }) => {
       const { name, id } = input;
 
@@ -61,7 +50,7 @@ export const enumItemRouter = createTRPCRouter({
       });
     }),
   findMany: publicProcedure
-    .input(findManySchema)
+    .input(findManyEnumItemSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50, enumId } = input;
 

@@ -1,31 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const createSchema = z.object({
-  fromStageId: z.number(),
-  toStageId: z.number(),
-  stageFieldId: z.number().optional(),
-  stageFieldValue: z.string().optional(),
-});
-
-const updateSchema = z.object({
-  id: z.number(),
-  fromStageId: z.number().optional(),
-  toStageId: z.number().optional(),
-  stageFieldId: z.number().optional(),
-  stageFieldValue: z.string().optional(),
-});
-
-const findManySchema = z.object({
-  take: z.number().optional(),
-  page: z.number().optional(),
-  templateId: z.number().optional(),
-  stageId: z.number().optional(),
-});
+import {
+  createProcessTemplateStageFlowSchema,
+  findManyProcessTemplateStageFlowSchema,
+  updateProcessTemplateStageFlowSchema,
+} from "~/entities/process-template/lib/schema";
 
 export const processTemplateStageFlowRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createSchema)
+    .input(createProcessTemplateStageFlowSchema)
     .mutation(async ({ ctx, input }) => {
       const { fromStageId, toStageId, stageFieldId, stageFieldValue } = input;
 
@@ -39,7 +22,7 @@ export const processTemplateStageFlowRouter = createTRPCRouter({
       });
     }),
   update: publicProcedure
-    .input(updateSchema)
+    .input(updateProcessTemplateStageFlowSchema)
     .mutation(async ({ ctx, input }) => {
       const { id, fromStageId, stageFieldId, stageFieldValue, toStageId } =
         input;
@@ -73,7 +56,7 @@ export const processTemplateStageFlowRouter = createTRPCRouter({
       });
     }),
   findMany: publicProcedure
-    .input(findManySchema)
+    .input(findManyProcessTemplateStageFlowSchema)
     .query(async ({ ctx, input }) => {
       const { page = 1, take = 50, templateId } = input;
 
