@@ -1,7 +1,6 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
 import { api } from "~/shared/lib/trpc/react";
 import {
   Command,
@@ -10,10 +9,12 @@ import {
   CommandItem,
   CommandList,
 } from "~/shared/ui/command";
-import { type FindManyEnumSchema } from "../lib/schema";
+import { type FindManyProcessTemplateFieldSchema } from "../lib/schema";
 
-export const EnumList = (props: FindManyEnumSchema) => {
-  const { data, isLoading } = api.enum.findMany.useQuery(props);
+export const ProcessTemplateFieldList = (
+  props: FindManyProcessTemplateFieldSchema,
+) => {
+  const { data, isLoading } = api.processTemplateField.findMany.useQuery(props);
 
   return (
     <Command>
@@ -28,8 +29,8 @@ export const EnumList = (props: FindManyEnumSchema) => {
           <CommandEmpty />
 
           {data.map(({ id, name }) => (
-            <CommandItem value={name} key={id} asChild>
-              <Link href={`/admin/enums/${id}`}>{name}</Link>
+            <CommandItem value={name} key={id}>
+              {name}
             </CommandItem>
           ))}
         </CommandList>

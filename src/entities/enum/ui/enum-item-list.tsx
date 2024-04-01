@@ -10,10 +10,10 @@ import {
   CommandItem,
   CommandList,
 } from "~/shared/ui/command";
-import { type FindManyEnumSchema } from "../lib/schema";
+import { type FindManyEnumItemSchema } from "../lib/schema";
 
-export const EnumList = (props: FindManyEnumSchema) => {
-  const { data, isLoading } = api.enum.findMany.useQuery(props);
+export const EnumItemList = (props: FindManyEnumItemSchema) => {
+  const { data, isLoading } = api.enumItem.findMany.useQuery(props);
 
   return (
     <Command>

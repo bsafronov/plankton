@@ -10,10 +10,9 @@ import {
   CommandItem,
   CommandList,
 } from "~/shared/ui/command";
-import { type FindManyEnumSchema } from "../lib/schema";
 
-export const EnumList = (props: FindManyEnumSchema) => {
-  const { data, isLoading } = api.enum.findMany.useQuery(props);
+export const PositionList = () => {
+  const { data, isLoading } = api.position.findMany.useQuery({});
 
   return (
     <Command>
@@ -29,7 +28,7 @@ export const EnumList = (props: FindManyEnumSchema) => {
 
           {data.map(({ id, name }) => (
             <CommandItem value={name} key={id} asChild>
-              <Link href={`/admin/enums/${id}`}>{name}</Link>
+              <Link href={`/admin/positions/${id}`}>{name}</Link>
             </CommandItem>
           ))}
         </CommandList>
