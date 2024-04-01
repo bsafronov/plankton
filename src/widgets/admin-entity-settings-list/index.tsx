@@ -1,4 +1,4 @@
-import { Building, Cog, LayoutList } from "lucide-react";
+import { Building, Cog, GraduationCap, LayoutList } from "lucide-react";
 import Link from "next/link";
 
 const items = [
@@ -9,10 +9,16 @@ const items = [
     icon: Cog,
   },
   {
-    title: "Отделы и должности",
-    description: "Настройка отделов и должностей пользователей",
+    title: "Отделы",
+    description: "Настройка отделов пользователей",
     href: "/admin/departments",
     icon: Building,
+  },
+  {
+    title: "Должности",
+    description: "Настройка должностей пользователей",
+    href: "/admin/positions",
+    icon: GraduationCap,
   },
   {
     title: "Перечисления",
