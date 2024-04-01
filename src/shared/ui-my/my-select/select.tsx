@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronsUpDown, X } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2, X } from "lucide-react";
 import { type Ref, forwardRef } from "react";
 import type {
   SelectBy,
@@ -43,7 +43,7 @@ const Select = <
     hasValue,
     onDelete,
   } = useSelect(props);
-  const { disabled, onBlur, name } = props;
+  const { disabled, onBlur, name, isLoading } = props;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -54,7 +54,7 @@ const Select = <
           name={name}
           variant={"outline"}
           className={cn(
-            "group flex h-auto min-h-10 w-full items-stretch divide-x p-0 text-sm font-normal hover:bg-slate-50",
+            "group flex h-auto min-h-10 w-full items-stretch p-0 text-sm font-normal transition-none hover:bg-muted",
           )}
           type="button"
         >
@@ -92,20 +92,25 @@ const Select = <
               <div>{getLabelSelected(value!)}</div>
             )}
           </div>
+          {isLoading && (
+            <div className="flex items-center">
+              <Loader2 className="size-4 animate-spin" />
+            </div>
+          )}
           <div
             className={cn(
-              "flex items-center px-3 text-slate-500 group-hover:text-slate-900",
-              open && "text-slate-900",
+              "flex items-center px-2 text-muted-foreground/50 group-hover:text-muted-foreground",
+              open && "text-muted-foreground",
             )}
           >
             <ChevronsUpDown className="size-4" />
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] border-none p-0">
         <Command>
           {hasSearch() && <CommandInput placeholder="Поиск..." />}
-          <CommandList>
+          <CommandList className="p-1">
             <CommandEmpty>Ничего не найдено...</CommandEmpty>
             {options.map((option, i) => (
               <CommandItem
