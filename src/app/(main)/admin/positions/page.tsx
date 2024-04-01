@@ -1,5 +1,5 @@
-import { DepartmentList } from "~/entities/department/ui/department-list";
-import { CreateDepartment } from "~/features/create-department";
+import { PositionList } from "~/entities/position/ui/position-list";
+import { CreatePosition } from "~/features/create-position";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
 
 export default function Page() {
@@ -12,14 +12,14 @@ export default function Page() {
             href: "/admin",
           },
           {
-            title: "Отделы",
-            href: "/admin/departments",
+            title: "Должности",
+            href: "/admin/positions",
           },
         ]}
       />
       <div className="space-y-4 p-4">
-        <CreateDepartment />
-        <DepartmentList />
+        <CreatePosition />
+        <PositionList />
       </div>
     </>
   );
