@@ -1,47 +1,53 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useBoolean } from "usehooks-ts";
 import {
-  createProcessTemplateSchema,
-  type CreateProcessTemplateSchema,
-} from "~/entities/process-template/lib/schema";
+  type CreateEnumItemInputSchema,
+  createEnumItemInputSchema,
+} from "~/entities/enum/lib/schema";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MyForm } from "~/shared/ui-my/my-form";
 import { MyFormField } from "~/shared/ui-my/my-form-field";
 import { Button } from "~/shared/ui/button";
-import { Textarea } from "~/shared/ui/textarea";
+import { Input } from "~/shared/ui/input";
 
-export const CreateProcessTemplate = () => {
-  const router = useRouter();
-  const form = useForm<CreateProcessTemplateSchema>({
-    resolver: zodResolver(createProcessTemplateSchema),
+type Props = {
+  enumId: ID;
+};
+export const CreateEnumItem = ({ enumId }: Props) => {
+  const { value: open, toggle } = useBoolean();
+
+  const form = useForm<CreateEnumItemInputSchema>({
+    resolver: zodResolver(createEnumItemInputSchema),
     defaultValues: {
       name: "",
     },
   });
-
   const ctx = api.useUtils();
-  const { mutate, isPending } = api.processTemplate.create.useMutation({
-    onSuccess: ({ id }) => {
-      router.push(`/admin/templates/${id}`);
-      void ctx.processTemplate.findMany.invalidate();
+  const { mutate, isPending } = api.enumItem.create.useMutation({
+    onSuccess: () => {
+      void ctx.enumItem.findMany.invalidate({ enumId });
       toast.success("Успешно!");
+      form.reset();
+      toggle();
     },
     onError: () => {
       toast.error("Ошибка!");
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => mutate({ ...data }));
+  const onSubmit = form.handleSubmit(({ name }) => mutate({ name, enumId }));
 
   return (
     <MyDialog
-      title="Создание шаблона"
-      trigger={<Button variant={"outline"}>Создать шаблон</Button>}
+      open={open}
+      onOpenChange={toggle}
+      title="Создание элемента перечисления"
+      trigger={<Button variant={"outline"}>Добавить элемент</Button>}
     >
       <MyForm
         form={form}
@@ -54,7 +60,7 @@ export const CreateProcessTemplate = () => {
           name="name"
           label="Название"
           required
-          render={(props) => <Textarea {...props} />}
+          render={(props) => <Input {...props} />}
         />
       </MyForm>
     </MyDialog>
