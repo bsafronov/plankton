@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { ProcessTemplateFieldList } from "~/entities/process-template/ui/process-template-field-list";
-import { CreateProcessTemplateField } from "~/features/create-process-template-field";
 import { api } from "~/shared/lib/trpc/react";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
-import { Button } from "~/shared/ui/button";
+import { StageFlowMap } from "~/widgets/stage-flow-map";
+import { StageFlowSettings } from "~/widgets/stage-flow-settings";
 
 type Props = {
   params: {
@@ -20,7 +18,7 @@ export default function Page({ params }: Props) {
     api.processTemplate.findUnique.useQuery(templateId);
 
   return (
-    <>
+    <div className="flex h-full flex-col">
       <MyBreadcrumb
         items={[
           {
@@ -35,18 +33,15 @@ export default function Page({ params }: Props) {
             title: template?.name,
             href: `/admin/templates/${template?.id}`,
           },
+          {
+            title: "Схема",
+          },
         ]}
       />
-
-      <div className="space-y-4 p-4">
-        <div className="flex gap-2">
-          <CreateProcessTemplateField templateId={templateId} />
-          <Button asChild variant={"outline"}>
-            <Link href={`/admin/templates/${template?.id}/schema`}>Схема</Link>
-          </Button>
-        </div>
-        <ProcessTemplateFieldList templateId={templateId} />
+      <div className="flex grow divide-x">
+        <StageFlowMap />
+        <StageFlowSettings templateId={templateId} />
       </div>
-    </>
+    </div>
   );
 }
