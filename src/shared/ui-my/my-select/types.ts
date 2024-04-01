@@ -13,6 +13,7 @@ export type SelectProps<
   onChange?: (value: SelectValue<Options, By, Multi>) => void;
   label?: SelectLabel<Options>;
   labelSelected?: SelectLabel<Options>;
+  isLoading?: boolean;
 } & OptionalSelectBy<Options, By> &
   SelectButtonProps;
 

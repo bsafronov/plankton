@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={cn("min-h-screen font-sans", inter.variable)}>
         <TRPCReactProvider>
           <ThemeProvider>
-            <Toaster />
+            <Toaster richColors />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>

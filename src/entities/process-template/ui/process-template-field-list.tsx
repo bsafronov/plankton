@@ -10,6 +10,8 @@ import {
   CommandList,
 } from "~/shared/ui/command";
 import { type FindManyProcessTemplateFieldSchema } from "../lib/schema";
+import { Badge } from "~/shared/ui/badge";
+import { fieldTypes } from "../lib/consts";
 
 export const ProcessTemplateFieldList = (
   props: FindManyProcessTemplateFieldSchema,
@@ -28,9 +30,10 @@ export const ProcessTemplateFieldList = (
         <CommandList className="p-1">
           <CommandEmpty />
 
-          {data.map(({ id, name }) => (
-            <CommandItem value={name} key={id}>
-              {name}
+          {data.map(({ id, name, type }) => (
+            <CommandItem value={name} key={id} className="flex gap-2">
+              <span>{name}</span>
+              <Badge>{fieldTypes.find((v) => v.value === type)?.label}</Badge>
             </CommandItem>
           ))}
         </CommandList>
