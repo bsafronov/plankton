@@ -35,7 +35,8 @@ export const CreateProcessTemplateField = ({ templateId }: Props) => {
   });
   const fieldType = form.watch("type");
   const ctx = api.useUtils();
-  const { data: enums } = api.enum.findMany.useQuery({});
+  const { data: enums, isFetching } = api.enum.findMany.useQuery({});
+
   const { mutate, isPending } = api.processTemplateField.create.useMutation({
     onSuccess: () => {
       void ctx.processTemplateField.findMany.invalidate({});
@@ -92,7 +93,14 @@ export const CreateProcessTemplateField = ({ templateId }: Props) => {
             control={form.control}
             name="enumId"
             label="Тип поля"
-            render={(props) => <MySelect options={enums} by="id" {...props} />}
+            render={(props) => (
+              <MySelect
+                options={enums}
+                by="id"
+                isLoading={isFetching}
+                {...props}
+              />
+            )}
           />
         )}
       </MyForm>
