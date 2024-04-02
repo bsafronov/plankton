@@ -1,10 +1,15 @@
 "use client";
 
 import { useSelectedStage } from "~/entities/process-template/lib/use-selected-stage";
+import { CreateProcessTemplateStageField } from "~/features/create-process-template-stage-field";
 import { UpdateProcessTemplateStage } from "~/features/update-process-template-stage";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
+import { StageFieldList } from "./stage-field-list";
 
-export const StageItem = () => {
+type Props = {
+  templateId: ID;
+};
+export const StageItem = ({ templateId }: Props) => {
   const stageId = useSelectedStage().stageId;
 
   if (!stageId) {
@@ -26,6 +31,13 @@ export const StageItem = () => {
         </TabsList>
         <TabsContent value="stage" className="p-2">
           <UpdateProcessTemplateStage stageId={stageId} />
+        </TabsContent>
+        <TabsContent value="field" className="p-2">
+          <CreateProcessTemplateStageField
+            stageId={stageId}
+            templateId={templateId}
+          />
+          <StageFieldList stageId={stageId} />
         </TabsContent>
       </Tabs>
     </div>

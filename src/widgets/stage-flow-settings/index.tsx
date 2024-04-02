@@ -17,7 +17,7 @@ export const StageFlowSettings = ({ templateId }: Props) => {
         <StageList templateId={templateId} />
       </div>
       <div className="grow overflow-hidden">
-        <StageItem />
+        <StageItem templateId={templateId} />
       </div>
     </div>
   );
