@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type ProcessTemplateStage } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -13,11 +14,11 @@ import { MyFormField } from "~/shared/ui-my/my-form-field";
 import { Textarea } from "~/shared/ui/textarea";
 
 type Props = {
-  stageId: ID;
+  stage: ProcessTemplateStage;
+  onSuccess?: () => void;
 };
 
-export const UpdateProcessTemplateStage = ({ stageId }: Props) => {
-  const { data: stage } = api.processTemplateStage.findUnique.useQuery(stageId);
+export const UpdateProcessTemplateStage = ({ stage, onSuccess }: Props) => {
   const form = useForm<UpdateProcessTemplateStageSchema>({
     resolver: zodResolver(updateProcessTemplateStageSchema),
     values: {
@@ -29,8 +30,12 @@ export const UpdateProcessTemplateStage = ({ stageId }: Props) => {
   const ctx = api.useUtils();
   const { mutate, isPending } = api.processTemplateStage.update.useMutation({
     onSuccess: () => {
-      void ctx.processTemplateStage.findMany.invalidate();
+      void ctx.processTemplateStage.findMany.invalidate({
+        templateId: stage.templateId,
+      });
+      void ctx.processTemplateStage.findUnique.invalidate(stage.id);
       toast.success("Успешно!");
+      onSuccess?.();
     },
     onError: () => {
       toast.error("Ошибка!");

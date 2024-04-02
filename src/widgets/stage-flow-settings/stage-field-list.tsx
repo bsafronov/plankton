@@ -1,19 +1,33 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import { type FindManyProcessTemplateStageFieldSchema } from "~/entities/process-template/lib/schema";
 import { api } from "~/shared/lib/trpc/react";
-import {
-  Command,
-  CommandEmpty,
-  CommandItem,
-  CommandList,
-} from "~/shared/ui/command";
+import { StageFieldItem } from "./stage-field-item";
 
-export const StageFieldList = (
-  props: FindManyProcessTemplateStageFieldSchema,
-) => {
-  const { data } = api.processTemplateStageField.findMany.useQuery(props);
+type Props = {
+  templateId: ID;
+  params: FindManyProcessTemplateStageFieldSchema;
+};
+export const StageFieldList = ({ params, templateId }: Props) => {
+  const { data } = api.processTemplateStageField.findMany.useQuery(params);
+  const { data: templateFields } = api.processTemplateField.findMany.useQuery({
+    templateId,
+  });
 
-  return <div>{data?.map(({ id, name }) => <div key={id}>{name}</div>)}</div>;
+  if (!templateFields) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-2">
+      {data?.map((item) => (
+        <StageFieldItem
+          key={item.id}
+          stageField={item}
+          templateFields={templateFields}
+          templateId={templateId}
+        />
+      ))}
+    </div>
+  );
 };
