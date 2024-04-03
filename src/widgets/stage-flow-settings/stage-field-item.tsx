@@ -1,4 +1,5 @@
 import type {
+  EnumItem,
   FieldType,
   ProcessTemplateField,
   ProcessTemplateStageField,
@@ -28,12 +29,47 @@ type Props = {
 };
 
 const getInputByType = (
-  placeholder: string | null,
+  { name, placeholder, description }: Props["stageField"],
+  enumItems?: EnumItem[],
 ): Record<FieldType, ReactNode> => ({
-  BOOLEAN: <Checkbox />,
-  ENUM: <MySelect />,
-  NUMBER: <Input type="number" placeholder={placeholder ?? undefined} />,
-  STRING: <Input type="text" placeholder={placeholder ?? undefined} />,
+  BOOLEAN: (
+    <div className="flex gap-2">
+      <Checkbox />
+      <div className="flex flex-col">
+        <span className={labelVariants()}>{name}</span>
+        {description && (
+          <p className="text-sm text-muted-foreground">{description}</p>
+        )}
+      </div>
+    </div>
+  ),
+  ENUM: (
+    <div>
+      <span className={labelVariants()}>{name}</span>
+      <MySelect options={enumItems} />
+      {description && (
+        <p className="text-sm text-muted-foreground">{description}</p>
+      )}
+    </div>
+  ),
+  NUMBER: (
+    <div>
+      <span className={labelVariants()}>{name}</span>
+      <Input type="number" placeholder={placeholder ?? undefined} />
+      {description && (
+        <p className="text-sm text-muted-foreground">{description}</p>
+      )}
+    </div>
+  ),
+  STRING: (
+    <div>
+      <span className={labelVariants()}>{name}</span>
+      <Input type="text" placeholder={placeholder ?? undefined} />
+      {description && (
+        <p className="text-sm text-muted-foreground">{description}</p>
+      )}
+    </div>
+  ),
 });
 
 export const StageFieldItem = ({
@@ -41,11 +77,17 @@ export const StageFieldItem = ({
   templateFields,
   templateId,
 }: Props) => {
-  const { description, name, templateFieldId, placeholder } = stageField;
+  const { templateFieldId } = stageField;
   const { value: openUpdate, toggle: toggleUpdate } = useBoolean();
   const { value: openDelete, toggle: toggleDelete } = useBoolean();
   const templateField = templateFields.find((v) => v.id === templateFieldId)!;
 
+  const { data: enumItems } = api.enumItem.findMany.useQuery(
+    { enumId: templateField.enumId! },
+    {
+      enabled: !!templateField.enumId,
+    },
+  );
   const ctx = api.useUtils();
   const { mutate: deleteField } =
     api.processTemplateStageField.delete.useMutation({
@@ -86,11 +128,9 @@ export const StageFieldItem = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <span className={labelVariants()}>{name}</span>
-      {getInputByType(placeholder)[templateField.type]}
-      {description && (
-        <p className="text-sm text-muted-foreground">{description}</p>
-      )}
+
+      {getInputByType(stageField, enumItems)[templateField.type]}
+
       <MyDialog
         open={openUpdate}
         onOpenChange={toggleUpdate}
