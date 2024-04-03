@@ -59,7 +59,14 @@ export const processTemplateStageFieldRouter = createTRPCRouter({
   findMany: publicProcedure
     .input(findManyProcessTemplateStageFieldSchema)
     .query(async ({ ctx, input }) => {
-      const { page = 1, take = 50, templateId, stageId } = input;
+      const {
+        page = 1,
+        take = 50,
+        templateId,
+        stageId,
+        templateFieldId,
+        withStage,
+      } = input;
 
       return ctx.db.processTemplateStageField.findMany({
         where: {
@@ -67,9 +74,13 @@ export const processTemplateStageFieldRouter = createTRPCRouter({
           stage: {
             templateId,
           },
+          templateFieldId,
         },
         skip: page * take - take,
         take: take,
+        include: {
+          stage: withStage,
+        },
       });
     }),
 });

@@ -64,6 +64,9 @@ export const processTemplateFieldRouter = createTRPCRouter({
         },
         skip: page * take - take,
         take: take,
+        include: {
+          _count: true,
+        },
       });
     }),
 });

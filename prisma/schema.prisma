@@ -171,8 +171,8 @@ model ProcessTemplateStageField {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @default(now()) @updatedAt
 
-    templateField   ProcessTemplateField? @relation(fields: [templateFieldId], references: [id])
-    templateFieldId Int?
+    templateField   ProcessTemplateField @relation(fields: [templateFieldId], references: [id])
+    templateFieldId Int
 
     stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
     stageId Int

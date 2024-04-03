@@ -5,6 +5,7 @@ import { ThemeProvider } from "~/shared/ui/theme-provider";
 import "./globals.css";
 import { Toaster } from "~/shared/ui/sonner";
 import { cn } from "~/shared/lib/utils";
+import { TooltipProvider } from "~/shared/ui/tooltip";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -27,8 +28,10 @@ export default function RootLayout({
       <body className={cn("min-h-screen font-sans", inter.variable)}>
         <TRPCReactProvider>
           <ThemeProvider>
-            <Toaster richColors />
-            {children}
+            <TooltipProvider>
+              <Toaster richColors />
+              {children}
+            </TooltipProvider>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>
