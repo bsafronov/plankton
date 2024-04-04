@@ -38,7 +38,7 @@ export default function Page({ params }: Props) {
           },
         ]}
       />
-      <div className="flex grow divide-x">
+      <div className="flex grow divide-x overflow-hidden">
         <StageFlowMap />
         <StageFlowSettings templateId={templateId} />
       </div>
