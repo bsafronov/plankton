@@ -3,6 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import {
   createProcessTemplateStageSchema,
   findManyProcessTemplateStageSchema,
+  findUniqueProcessTemplateStageSchema,
   updateProcessTemplateStageSchema,
 } from "~/entities/process-template/lib/schema";
 
@@ -49,10 +50,23 @@ export const processTemplateStageRouter = createTRPCRouter({
         },
       });
     }),
+  findUniqueMutation: publicProcedure
+    .input(findUniqueProcessTemplateStageSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { id, withFields } = input;
+      return ctx.db.processTemplateStage.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          fields: withFields,
+        },
+      });
+    }),
   findMany: publicProcedure
     .input(findManyProcessTemplateStageSchema)
     .query(async ({ ctx, input }) => {
-      const { page = 1, take = 50, templateId } = input;
+      const { page = 1, take = 50, templateId, withFields } = input;
 
       return ctx.db.processTemplateStage.findMany({
         where: {
@@ -60,6 +74,9 @@ export const processTemplateStageRouter = createTRPCRouter({
         },
         skip: page * take - take,
         take: take,
+        include: {
+          fields: withFields,
+        },
       });
     }),
 });
