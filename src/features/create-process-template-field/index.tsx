@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { useBoolean } from "usehooks-ts";
 import { fieldTypes } from "~/entities/process-template/lib/consts";
 import {
-  createProcessTemplateFieldSchema,
   type CreateProcessTemplateFieldSchema,
-} from "~/entities/process-template/lib/schema";
+  createProcessTemplateFieldSchema,
+} from "~/entities/process-template/lib/field-schema";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MyForm } from "~/shared/ui-my/my-form";

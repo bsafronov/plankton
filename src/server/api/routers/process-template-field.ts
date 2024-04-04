@@ -3,7 +3,7 @@ import {
   createProcessTemplateFieldSchema,
   findManyProcessTemplateFieldSchema,
   updateProcessTemplateFieldSchema,
-} from "~/entities/process-template/lib/schema";
+} from "~/entities/process-template/lib/field-schema";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const processTemplateFieldRouter = createTRPCRouter({

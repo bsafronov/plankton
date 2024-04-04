@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  createProcessTemplateSchema,
   type CreateProcessTemplateSchema,
-} from "~/entities/process-template/lib/schema";
+  createProcessTemplateSchema,
+} from "~/entities/process-template/lib/template-schema";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MyForm } from "~/shared/ui-my/my-form";

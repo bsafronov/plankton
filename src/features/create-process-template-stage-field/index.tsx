@@ -8,7 +8,7 @@ import { useBoolean } from "usehooks-ts";
 import {
   type CreateProcessTemplateStageFieldSchema,
   createProcessTemplateStageFieldSchema,
-} from "~/entities/process-template/lib/schema";
+} from "~/entities/process-template/lib/stage-field-schema";
 import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";

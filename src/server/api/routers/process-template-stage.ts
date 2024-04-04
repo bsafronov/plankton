@@ -5,7 +5,7 @@ import {
   findManyProcessTemplateStageSchema,
   findUniqueProcessTemplateStageSchema,
   updateProcessTemplateStageSchema,
-} from "~/entities/process-template/lib/schema";
+} from "~/entities/process-template/lib/stage-schema";
 
 export const processTemplateStageRouter = createTRPCRouter({
   create: publicProcedure

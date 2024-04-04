@@ -5,9 +5,9 @@ import { type ProcessTemplateStage } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  updateProcessTemplateStageSchema,
   type UpdateProcessTemplateStageSchema,
-} from "~/entities/process-template/lib/schema";
+  updateProcessTemplateStageSchema,
+} from "~/entities/process-template/lib/stage-schema";
 import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyForm } from "~/shared/ui-my/my-form";

@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  updateProcessTemplateStageFieldSchema,
   type UpdateProcessTemplateStageFieldSchema,
-} from "~/entities/process-template/lib/schema";
+  updateProcessTemplateStageFieldSchema,
+} from "~/entities/process-template/lib/stage-field-schema";
 import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyForm } from "~/shared/ui-my/my-form";

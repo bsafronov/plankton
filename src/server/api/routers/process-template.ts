@@ -4,7 +4,7 @@ import {
   createProcessTemplateSchema,
   findManyProcessTemplateSchema,
   updateProcessTemplateSchema,
-} from "~/entities/process-template/lib/schema";
+} from "~/entities/process-template/lib/template-schema";
 
 export const processTemplateRouter = createTRPCRouter({
   create: publicProcedure
