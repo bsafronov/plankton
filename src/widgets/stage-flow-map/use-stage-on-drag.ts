@@ -1,13 +1,9 @@
 import { useCallback, type DragEvent } from "react";
-import { type Node, type ReactFlowInstance } from "reactflow";
-import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
-import { api } from "~/shared/lib/trpc/react";
+import { type ReactFlowInstance } from "reactflow";
+import { useStageOnAdd } from "./use-stage-on-add";
 
 export const useStageOnDrop = (reactFlowInstance: ReactFlowInstance | null) => {
-  const addNode = useStageFlow.use.addNode();
-
-  const { mutateAsync: getStage } =
-    api.processTemplateStage.findUniqueMutation.useMutation();
+  const { addNode } = useStageOnAdd();
 
   const onDrop = useCallback(
     async (event: DragEvent<HTMLDivElement>) => {
@@ -25,19 +21,9 @@ export const useStageOnDrop = (reactFlowInstance: ReactFlowInstance | null) => {
 
       if (!position) return;
 
-      const stage = await getStage({ id: Number(stageId), withFields: true });
-
-      if (!stage) return;
-
-      const newStage: Node = {
-        id: stageId,
-        data: stage,
-        position,
-        type: "stage",
-      };
-      addNode(newStage);
+      await addNode({ stageId, position });
     },
-    [reactFlowInstance, addNode, getStage],
+    [reactFlowInstance, addNode],
   );
 
   const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
