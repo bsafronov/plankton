@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
 import {
   createProcessTemplateFieldSchema,
   findManyProcessTemplateFieldSchema,
   updateProcessTemplateFieldSchema,
 } from "~/entities/process-template/lib/schema";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const processTemplateFieldRouter = createTRPCRouter({
   create: publicProcedure
@@ -47,6 +47,15 @@ export const processTemplateFieldRouter = createTRPCRouter({
   findUnique: publicProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
+      return ctx.db.processTemplateField.findUnique({
+        where: {
+          id: input,
+        },
+      });
+    }),
+  findUniqueMutation: publicProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
       return ctx.db.processTemplateField.findUnique({
         where: {
           id: input,
