@@ -8,6 +8,7 @@ import {
   updateProcessTemplateStageSchema,
   type UpdateProcessTemplateStageSchema,
 } from "~/entities/process-template/lib/schema";
+import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyForm } from "~/shared/ui-my/my-form";
 import { MyFormField } from "~/shared/ui-my/my-form-field";
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export const UpdateProcessTemplateStage = ({ stage, onSuccess }: Props) => {
+  const updateNode = useStageFlow.use.updateNode();
   const form = useForm<UpdateProcessTemplateStageSchema>({
     resolver: zodResolver(updateProcessTemplateStageSchema),
     values: {
@@ -29,11 +31,13 @@ export const UpdateProcessTemplateStage = ({ stage, onSuccess }: Props) => {
 
   const ctx = api.useUtils();
   const { mutate, isPending } = api.processTemplateStage.update.useMutation({
-    onSuccess: () => {
+    onSuccess: (stage) => {
       void ctx.processTemplateStage.findMany.invalidate({
         templateId: stage.templateId,
       });
       void ctx.processTemplateStage.findUnique.invalidate(stage.id);
+      updateNode(stage.id, stage);
+
       toast.success("Успешно!");
       onSuccess?.();
     },
