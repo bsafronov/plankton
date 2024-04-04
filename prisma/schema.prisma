@@ -123,6 +123,7 @@ model ProcessTemplate {
     stages    ProcessTemplateStage[]
     fields    ProcessTemplateField[]
     processes Process[]
+    flowNodes ProcessTemplateFlowNode[]
 }
 
 model ProcessTemplateField {
@@ -157,10 +158,13 @@ model ProcessTemplateStage {
     templateStart ProcessTemplate? @relation("startStage")
     templateEnd   ProcessTemplate? @relation("endStage")
 
-    fields        ProcessTemplateStageField[]
-    flowsFrom     ProcessTemplateStageFlow[]  @relation("flowsFrom")
-    flowsTo       ProcessTemplateStageFlow[]  @relation("flowsTo")
-    processStages ProcessStage[]
+    fields          ProcessTemplateStageField[]
+    flowsFrom       ProcessTemplateStageFlow[]  @relation("flowsFrom")
+    flowsTo         ProcessTemplateStageFlow[]  @relation("flowsTo")
+    processStages   ProcessStage[]
+    flowNode        ProcessTemplateFlowNode?
+    sourceFlowEdges ProcessTemplateFlowEdge[]   @relation("source")
+    targetFlowEdges ProcessTemplateFlowEdge[]   @relation("target")
 }
 
 model ProcessTemplateStageField {
@@ -179,6 +183,31 @@ model ProcessTemplateStageField {
 
     flows              ProcessTemplateStageFlow[]
     processStageFields ProcessStageField[]
+}
+
+model ProcessTemplateFlowNode {
+    id   Int   @id @default(autoincrement())
+    posX Float
+    posY Float
+
+    stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
+    stageId Int                  @unique
+
+    template   ProcessTemplate @relation(fields: [templateId], references: [id])
+    templateId Int
+}
+
+model ProcessTemplateFlowEdge {
+    id           Int     @id @default(autoincrement())
+    sourceHandle String
+    targetHandle String
+    value        String?
+
+    sourceStage   ProcessTemplateStage @relation("source", fields: [sourceStageId], references: [id])
+    sourceStageId Int
+
+    targetStage   ProcessTemplateStage @relation("target", fields: [targetStageId], references: [id])
+    targetStageId Int
 }
 
 model ProcessTemplateStageFlow {
