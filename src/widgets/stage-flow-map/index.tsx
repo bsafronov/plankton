@@ -15,18 +15,19 @@ import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { StageEdge } from "./stage-edge";
 import { StageNode } from "./stage-node";
 import { useStageOnDrop } from "./use-stage-on-drag";
+import { useOnNodesChange } from "./use-on-nodes-change";
 
 export const StageFlowMap = () => {
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
   const { onDrop, onDragOver } = useStageOnDrop(reactFlowInstance);
+  const onNodesChange = useOnNodesChange();
   const edgeTypes: EdgeTypes = useMemo(() => ({ stage: StageEdge }), []);
   const nodeTypes: NodeTypes = useMemo(() => ({ stage: StageNode }), []);
   const nodes = useStageFlow.use.nodes();
   const edges = useStageFlow.use.edges();
   const onConnect = useStageFlow.use.onConnect();
   const onEdgesChange = useStageFlow.use.onEdgesChange();
-  const onNodesChange = useStageFlow.use.onNodesChange();
 
   return (
     <ReactFlow

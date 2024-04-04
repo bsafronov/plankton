@@ -92,8 +92,6 @@ const useStageFlowBase = create<RFState>((set, get) => ({
   },
 
   addNode: (node) => {
-    console.log(node);
-
     set({
       nodes: [...get().nodes, node],
       stageIds: [...get().stageIds, Number(node.id)],
