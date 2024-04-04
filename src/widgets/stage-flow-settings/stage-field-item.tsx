@@ -7,9 +7,9 @@ import type {
 import { Edit, Link, MoreVertical, Trash } from "lucide-react";
 import { type ReactNode } from "react";
 import { useBoolean } from "usehooks-ts";
+import { DeleteProcessTemplateStageField } from "~/features/delete-process-template-stage-field";
 import { UpdateProcessTemplateStageField } from "~/features/update-process-template-stage-field";
 import { api } from "~/shared/lib/trpc/react";
-import { MyAlertDialog } from "~/shared/ui-my/my-alert-dialog";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MySelect } from "~/shared/ui-my/my-select";
 import { Checkbox } from "~/shared/ui/checkbox";
@@ -88,22 +88,15 @@ export const StageFieldItem = ({
       enabled: !!templateField.enumId,
     },
   );
-  const ctx = api.useUtils();
-  const { mutate: deleteField } =
-    api.processTemplateStageField.delete.useMutation({
-      onSuccess: () => {
-        void ctx.processTemplateStageField.findMany.invalidate({
-          stageId: stageField.stageId,
-        });
-      },
-    });
 
   return (
     <div className="rounded-md bg-muted/30 p-2">
       <div className="mb-4 flex justify-between gap-2">
-        <span className="flex items-center gap-2 text-xs text-blue-500">
+        <span className="flex items-center text-xs text-blue-500">
           <Link className="size-4" />
-          {templateField.name}
+          &nbsp;
+          {templateField.name}&nbsp;|&nbsp;
+          {templateField.type}
         </span>
         <DropdownMenu>
           <DropdownMenuTrigger className="text-muted-foreground hover:text-foreground">
@@ -143,10 +136,10 @@ export const StageFieldItem = ({
         />
       </MyDialog>
 
-      <MyAlertDialog
-        open={openDelete}
+      <DeleteProcessTemplateStageField
+        stageFieldId={stageField.id}
         onCancel={toggleDelete}
-        onSubmit={() => deleteField(stageField.id)}
+        open={openDelete}
       />
     </div>
   );
