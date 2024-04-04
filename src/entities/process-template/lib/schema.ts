@@ -104,15 +104,21 @@ export const updateProcessTemplateStageSchema = z.object({
   name: z.string().min(1, "Обязательное поле"),
 });
 
+export const findUniqueProcessTemplateStageSchema = z.object({
+  id: z.number(),
+  withFields: z.boolean().optional(),
+});
+
 export const findManyProcessTemplateStageSchema = z.object({
   take: z.number().optional(),
   page: z.number().optional(),
   templateId: z.number().optional(),
+  withFields: z.boolean().optional(),
 });
 
 export const createProcessTemplateStageFieldSchema = z.object({
   stageId: z.number(),
-  templateFieldId: z.number(),
+  templateFieldId: z.number({ required_error: "Обязательное поле" }),
   name: z.string().min(1, "Обязательное поле"),
   description: z.string().optional(),
   placeholder: z.string().optional(),
