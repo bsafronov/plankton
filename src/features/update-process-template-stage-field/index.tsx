@@ -7,6 +7,7 @@ import {
   updateProcessTemplateStageFieldSchema,
   type UpdateProcessTemplateStageFieldSchema,
 } from "~/entities/process-template/lib/schema";
+import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyForm } from "~/shared/ui-my/my-form";
 import { MyFormField } from "~/shared/ui-my/my-form-field";
@@ -24,6 +25,7 @@ export const UpdateProcessTemplateStageField = ({
   templateId,
   onSuccess,
 }: Props) => {
+  const updateNodeField = useStageFlow.use.updateNodeField();
   const { data: stageField } =
     api.processTemplateStageField.findUnique.useQuery(stageFieldId);
 
@@ -45,11 +47,10 @@ export const UpdateProcessTemplateStageField = ({
   const ctx = api.useUtils();
   const { mutate, isPending } =
     api.processTemplateStageField.update.useMutation({
-      onSuccess: () => {
-        void ctx.processTemplateStageField.findMany.invalidate({
-          stageId: stageField?.stageId,
-        });
+      onSuccess: (data) => {
+        void ctx.processTemplateStageField.findMany.invalidate();
         toast.success("Успешно!");
+        updateNodeField(data.stageId, data);
         onSuccess?.();
       },
       onError: () => {
@@ -70,27 +71,30 @@ export const UpdateProcessTemplateStageField = ({
         control={form.control}
         name="name"
         label="Название"
+        description="Находится над полем ввода, необходимо для идентификации поля этапа"
         required
         render={(props) => <Input {...props} />}
       />
       <MyFormField
         control={form.control}
         name="placeholder"
+        description="Находится внутри поля ввода и служит подсказкой к вводимому значению"
         label="Плейсхолдер"
-        required
         render={(props) => <Input {...props} />}
       />
       <MyFormField
         control={form.control}
         name="description"
+        description="Находится ниже поля ввода и описывает роль поля в форме"
         label="Описание"
-        required
         render={(props) => <Input {...props} />}
       />
       <MyFormField
         control={form.control}
         name="templateFieldId"
+        description="К какому полю шаблона будет привязан результат ввода"
         label="Ссылка на поле шаблона"
+        required
         render={(props) => <MySelect options={fields} by="id" {...props} />}
       />
     </MyForm>
