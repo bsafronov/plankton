@@ -6,8 +6,9 @@ import { enumItemRouter } from "./routers/enum-item";
 import { positionRouter } from "./routers/position";
 import { processTemplateStageRouter } from "./routers/process-template-stage";
 import { processTemplateStageFieldRouter } from "./routers/process-template-stage-field";
-import { processTemplateStageFlowRouter } from "./routers/process-template-stage-flow";
 import { departmentRouter } from "./routers/department";
+import { processTemplateFlowNodeRouter } from "./routers/process-template-flow-node";
+import { processTemplateFlowEdgeRouter } from "./routers/process-template-flow-edge";
 
 /**
  * This is the primary router for your server.
@@ -23,7 +24,8 @@ export const appRouter = createTRPCRouter({
   processTemplateField: processTemplateFieldRouter,
   processTemplateStage: processTemplateStageRouter,
   processTemplateStageField: processTemplateStageFieldRouter,
-  processTemplateStageFlow: processTemplateStageFlowRouter,
+  processTemplateFlowNode: processTemplateFlowNodeRouter,
+  processTemplateFlowEdge: processTemplateFlowEdgeRouter,
 });
 
 // export type definition of API
