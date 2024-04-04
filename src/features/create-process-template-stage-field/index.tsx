@@ -9,6 +9,7 @@ import {
   type CreateProcessTemplateStageFieldSchema,
   createProcessTemplateStageFieldSchema,
 } from "~/entities/process-template/lib/schema";
+import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MyForm } from "~/shared/ui-my/my-form";
@@ -26,6 +27,7 @@ export const CreateProcessTemplateStageField = ({
   templateId,
 }: Props) => {
   const { value: open, toggle } = useBoolean();
+  const addNodeField = useStageFlow.use.addNodeField();
   const form = useForm<CreateProcessTemplateStageFieldSchema>({
     resolver: zodResolver(createProcessTemplateStageFieldSchema),
     defaultValues: {
@@ -35,14 +37,17 @@ export const CreateProcessTemplateStageField = ({
       stageId,
     },
   });
+
   const { data: fields } = api.processTemplateField.findMany.useQuery({
     templateId,
   });
   const ctx = api.useUtils();
   const { mutate, isPending } =
     api.processTemplateStageField.create.useMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         void ctx.processTemplateStageField.findMany.invalidate();
+        addNodeField(data.stageId, data);
+
         toast.success("Успешно!");
         form.reset();
         toggle();
@@ -76,28 +81,31 @@ export const CreateProcessTemplateStageField = ({
           control={form.control}
           name="name"
           label="Название"
-          required
-          render={(props) => <Input {...props} />}
-        />
-        <MyFormField
-          control={form.control}
-          name="placeholder"
-          label="Плейсхолдер"
-          required
-          render={(props) => <Input {...props} />}
-        />
-        <MyFormField
-          control={form.control}
-          name="description"
-          label="Описание"
+          description="Находится над полем ввода, необходимо для идентификации поля этапа"
           required
           render={(props) => <Input {...props} />}
         />
         <MyFormField
           control={form.control}
           name="templateFieldId"
+          description="К какому полю шаблона будет привязан результат ввода"
           label="Ссылка на поле шаблона"
+          required
           render={(props) => <MySelect options={fields} by="id" {...props} />}
+        />
+        <MyFormField
+          control={form.control}
+          name="placeholder"
+          description="Находится внутри поля ввода и служит подсказкой к вводимому значению"
+          label="Плейсхолдер"
+          render={(props) => <Input {...props} />}
+        />
+        <MyFormField
+          control={form.control}
+          name="description"
+          description="Находится ниже поля ввода и описывает роль поля в форме"
+          label="Описание"
+          render={(props) => <Input {...props} />}
         />
       </MyForm>
     </MyDialog>
