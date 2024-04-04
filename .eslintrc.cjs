@@ -41,6 +41,7 @@ const config = {
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-return": "off",
     "react/no-children-prop": "off",
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };
 module.exports = config;
