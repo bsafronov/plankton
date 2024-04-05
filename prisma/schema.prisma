@@ -69,7 +69,7 @@ model User {
 
 model Department {
     id        Int      @id @default(autoincrement())
-    name      String
+    name      String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
@@ -79,7 +79,7 @@ model Department {
 
 model Position {
     id        Int      @id @default(autoincrement())
-    name      String
+    name      String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
@@ -89,7 +89,7 @@ model Position {
 
 model Enum {
     id        Int      @id @default(autoincrement())
-    name      String
+    name      String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
@@ -105,11 +105,13 @@ model EnumItem {
 
     enum   Enum @relation(fields: [enumId], references: [id])
     enumId Int
+
+    @@unique([name, enumId])
 }
 
 model ProcessTemplate {
     id         Int      @id @default(autoincrement())
-    name       String
+    name       String   @unique
     isArchived Boolean  @default(false)
     createdAt  DateTime @default(now())
     updatedAt  DateTime @default(now()) @updatedAt
@@ -142,6 +144,8 @@ model ProcessTemplateField {
 
     stageFields   ProcessTemplateStageField[]
     processFields ProcessField[]
+
+    @@unique([name, templateId])
 }
 
 model ProcessTemplateStage {
@@ -162,6 +166,8 @@ model ProcessTemplateStage {
     fields        ProcessTemplateStageField[]
     processStages ProcessStage[]
     flowNode      ProcessTemplateFlowNode?
+
+    @@unique([name, templateId])
 }
 
 model ProcessTemplateStageField {
@@ -180,10 +186,12 @@ model ProcessTemplateStageField {
 
     flowEdges          ProcessTemplateFlowEdge[]
     processStageFields ProcessStageField[]
+
+    @@unique([name, stageId])
 }
 
 model ProcessTemplateFlowNode {
-    stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
+    stage   ProcessTemplateStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
     stageId Int                  @unique
 
     posX Float
@@ -209,10 +217,10 @@ model ProcessTemplateFlowEdge {
     target   ProcessTemplateFlowNode @relation("target", fields: [targetId], references: [stageId], onDelete: Cascade)
     targetId Int
 
-    stageField   ProcessTemplateStageField? @relation(fields: [stageFieldId], references: [id])
+    stageField   ProcessTemplateStageField? @relation(fields: [stageFieldId], references: [id], onDelete: Cascade)
     stageFieldId Int?
 
-    template   ProcessTemplate @relation(fields: [templateId], references: [id])
+    template   ProcessTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
     templateId Int
 }
 
