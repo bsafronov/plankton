@@ -14,8 +14,8 @@ export const createProcessTemplateFlowEdgeSchema = z.object({
   templateId: z.number(),
   sourceHandle: z.string(),
   targetHandle: z.string(),
-  sourceStageId: z.number(),
-  targetStageId: z.number(),
+  sourceId: z.number(),
+  targetId: z.number(),
   stageFieldId: z.number().optional(),
   value: z.string().optional(),
 });

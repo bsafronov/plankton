@@ -18,7 +18,7 @@ export const createProcessTemplateFlowNodeSchema = z.object({
 });
 
 export const updateProcessTemplateFlowNodeSchema = z.object({
-  id: z.number(),
+  stageId: z.number(),
   posX: z.number(),
   posY: z.number(),
 });

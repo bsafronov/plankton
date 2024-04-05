@@ -6,8 +6,8 @@ export const useStageOnAdd = () => {
   const _addNode = useStageFlow.use.addNode();
   const { mutateAsync: getStage } =
     api.processTemplateStage.findUniqueMutation.useMutation();
-  // const { mutateAsync: createNode } =
-  //   api.processTemplateFlowNode.create.useMutation();
+  const { mutateAsync: createNode } =
+    api.processTemplateFlowNode.create.useMutation();
 
   const addNode = async ({
     stageId,
@@ -20,12 +20,12 @@ export const useStageOnAdd = () => {
 
     if (!stage) return;
 
-    // await createNode({
-    //   posX: position.x,
-    //   posY: position.y,
-    //   stageId: stage.id,
-    //   templateId: stage.templateId,
-    // });
+    await createNode({
+      posX: position.x,
+      posY: position.y,
+      stageId: stage.id,
+      templateId: stage.templateId,
+    });
 
     const node: Node = {
       id: stageId,

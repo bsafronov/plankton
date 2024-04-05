@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
-import { type FindManyProcessTemplateStageSchema } from "~/entities/process-template/lib/schema";
+import { type FindManyProcessTemplateStageSchema } from "~/entities/process-template/lib/stage-schema";
 import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
 import {

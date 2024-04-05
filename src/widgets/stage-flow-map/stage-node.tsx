@@ -9,19 +9,19 @@ import { memo } from "react";
 import { Handle, Position, type NodeProps } from "reactflow";
 import { useSelectedStage } from "~/entities/process-template/lib/use-selected-stage";
 import { cn } from "~/shared/lib/utils";
-import { CustomHandle } from "./custom-handle";
 import { MyAlertDialog } from "~/shared/ui-my/my-alert-dialog";
-import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
+import { CustomHandle } from "./custom-handle";
+import { useStageOnDelete } from "./use-stage-on-delete";
 
 type Data = ProcessTemplateStage & {
   fields: ProcessTemplateField[];
 };
 
-const Node = ({ data, isConnectable }: NodeProps<Data>) => {
+const Node = ({ id, data, isConnectable }: NodeProps<Data>) => {
   const setStageId = useSelectedStage().setStageId;
-  const deleteNode = useStageFlow.use.deleteNode();
-  // const deleteNode = useStageFlow().deleteNode;
-  const { id, name, fields } = data;
+  const onDelete = useStageOnDelete();
+
+  const { name, fields } = data;
 
   return (
     <div className="min-w-[160px] max-w-[320px] rounded-md border bg-background">
@@ -59,7 +59,7 @@ const Node = ({ data, isConnectable }: NodeProps<Data>) => {
         <div className="flex gap-1">
           <button
             className="text-blue-500 hover:text-blue-400"
-            onClick={() => setStageId(id)}
+            onClick={() => setStageId(Number(id))}
           >
             <Edit className="size-4" />
           </button>
@@ -70,7 +70,7 @@ const Node = ({ data, isConnectable }: NodeProps<Data>) => {
                 <Trash className="size-4" />
               </button>
             }
-            onSubmit={() => deleteNode(id)}
+            onSubmit={() => onDelete(id)}
           />
         </div>
       </div>

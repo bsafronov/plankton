@@ -9,8 +9,8 @@ export const useOnNodesChange = () => {
   const nodes = useStageFlow.use.nodes();
   const [changes, setChanges] = useState<NodeChange[]>();
   const debounceChanges = useDebounceCallback(setChanges, 1000);
-  // const { mutate: updateNode } =
-  //   api.processTemplateFlowNode.update.useMutation();
+  const { mutate: updateNode } =
+    api.processTemplateFlowNode.update.useMutation();
 
   useEffect(() => {
     const updateNodePosition = async () => {
@@ -28,11 +28,11 @@ export const useOnNodesChange = () => {
 
       const position = node.position;
 
-      // updateNode({
-      //   id: node.data.id,
-      //   posX: position.x,
-      //   posY: position.y,
-      // });
+      updateNode({
+        stageId: Number(node.id),
+        posX: position.x,
+        posY: position.y,
+      });
     };
 
     void updateNodePosition();

@@ -3,7 +3,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { type Connection } from "reactflow";
+import type { Edge, Connection } from "reactflow";
 import { z } from "zod";
 import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { api } from "~/shared/lib/trpc/react";
@@ -12,6 +12,7 @@ import { MyForm } from "~/shared/ui-my/my-form";
 import { MyFormField } from "~/shared/ui-my/my-form-field";
 import { MySelect } from "~/shared/ui-my/my-select";
 import { Input } from "~/shared/ui/input";
+import { useOnConnect } from "../stage-flow-map/use-on-connect";
 
 export const StageConnectDialog = () => {
   const connection = useStageFlow.use.connectDialog();
@@ -32,9 +33,9 @@ const schema = z.object({
   value: z.string(),
 });
 
-const StageConnectDialogContent = (connection: Connection) => {
+const StageConnectDialogContent = (connection: Connection | Edge) => {
   const stageFieldId = Number(connection.sourceHandle?.split("-")[2]);
-  const onConnectSubmit = useStageFlow.use.onConnectSubmit();
+  const { onConnectSubmit } = useOnConnect();
 
   const { data: stageField } =
     api.processTemplateStageField.findUnique.useQuery(stageFieldId);
@@ -58,11 +59,12 @@ const StageConnectDialogContent = (connection: Connection) => {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) =>
-    onConnectSubmit({
-      ...connection,
-      label: data.value,
-    }),
+  const onSubmit = form.handleSubmit(
+    (data) =>
+      void onConnectSubmit({
+        ...connection,
+        label: data.value,
+      }),
   );
 
   return (

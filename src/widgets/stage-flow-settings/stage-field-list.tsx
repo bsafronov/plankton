@@ -1,6 +1,6 @@
 "use client";
 
-import { type FindManyProcessTemplateStageFieldSchema } from "~/entities/process-template/lib/schema";
+import { type FindManyProcessTemplateStageFieldSchema } from "~/entities/process-template/lib/stage-field-schema";
 import { api } from "~/shared/lib/trpc/react";
 import { StageFieldItem } from "./stage-field-item";
 

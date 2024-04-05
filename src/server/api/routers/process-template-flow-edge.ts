@@ -11,9 +11,9 @@ export const processTemplateFlowEdgeRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const {
         sourceHandle,
-        sourceStageId,
+        sourceId,
+        targetId,
         targetHandle,
-        targetStageId,
         templateId,
         stageFieldId,
         value,
@@ -24,8 +24,8 @@ export const processTemplateFlowEdgeRouter = createTRPCRouter({
           templateId,
           sourceHandle,
           targetHandle,
-          sourceStageId,
-          targetStageId,
+          sourceId,
+          targetId,
           stageFieldId,
           value,
         },

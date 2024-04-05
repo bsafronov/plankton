@@ -159,11 +159,9 @@ model ProcessTemplateStage {
     templateStart ProcessTemplate? @relation("startStage")
     templateEnd   ProcessTemplate? @relation("endStage")
 
-    fields          ProcessTemplateStageField[]
-    processStages   ProcessStage[]
-    flowNode        ProcessTemplateFlowNode?
-    sourceFlowEdges ProcessTemplateFlowEdge[]   @relation("source")
-    targetFlowEdges ProcessTemplateFlowEdge[]   @relation("target")
+    fields        ProcessTemplateStageField[]
+    processStages ProcessStage[]
+    flowNode      ProcessTemplateFlowNode?
 }
 
 model ProcessTemplateStageField {
@@ -185,28 +183,31 @@ model ProcessTemplateStageField {
 }
 
 model ProcessTemplateFlowNode {
-    id   Int   @id @default(autoincrement())
-    posX Float
-    posY Float
-
     stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
     stageId Int                  @unique
 
+    posX Float
+    posY Float
+
     template   ProcessTemplate @relation(fields: [templateId], references: [id])
     templateId Int
+
+    sourceFlowEdges ProcessTemplateFlowEdge[] @relation("source")
+    targetFlowEdges ProcessTemplateFlowEdge[] @relation("target")
 }
 
 model ProcessTemplateFlowEdge {
-    id           Int     @id @default(autoincrement())
+    id Int @id @default(autoincrement())
+
     sourceHandle String
     targetHandle String
     value        String?
 
-    sourceStage   ProcessTemplateStage @relation("source", fields: [sourceStageId], references: [id])
-    sourceStageId Int
+    source   ProcessTemplateFlowNode @relation("source", fields: [sourceId], references: [stageId], onDelete: Cascade)
+    sourceId Int
 
-    targetStage   ProcessTemplateStage @relation("target", fields: [targetStageId], references: [id])
-    targetStageId Int
+    target   ProcessTemplateFlowNode @relation("target", fields: [targetId], references: [stageId], onDelete: Cascade)
+    targetId Int
 
     stageField   ProcessTemplateStageField? @relation(fields: [stageFieldId], references: [id])
     stageFieldId Int?

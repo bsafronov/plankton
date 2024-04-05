@@ -1,46 +1,44 @@
-import { create } from "zustand";
+import type {
+  ProcessTemplateStage,
+  ProcessTemplateStageField,
+} from "@prisma/client";
 import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   type Connection,
   type Edge,
   type EdgeChange,
   type Node,
   type NodeChange,
-  type OnNodesChange,
   type OnEdgesChange,
-  type OnConnect,
-  addEdge,
-  applyNodeChanges,
-  applyEdgeChanges,
+  type OnNodesChange,
 } from "reactflow";
-import type {
-  ProcessTemplateStage,
-  ProcessTemplateStageField,
-} from "@prisma/client";
+import { create } from "zustand";
 import { createSelectors } from "~/shared/lib/zustand";
 
-type Data = ProcessTemplateStage & {
+export type StageNodeData = Partial<ProcessTemplateStage> & {
   fields: ProcessTemplateStageField[];
 };
 
 type RFState = {
-  connectDialog: Connection | null;
+  connectDialog: Connection | Edge | null;
+  setConnectDialog: (connection: Connection | Edge | null) => void;
   closeConnectDialog: () => void;
   stageIds: ID[];
-  nodes: Node<Data>[];
+  nodes: Node<StageNodeData>[];
   edges: Edge[];
   getNodes: () => Node[];
   getEdges: () => Edge[];
 
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
-  onConnect: OnConnect;
-  onConnectSubmit: (connection: Edge | Connection) => void;
-
+  onConnect: (connection: Edge | Connection) => void;
   addNode: (node: Node) => void;
   addNodeField: (stageId: ID, field: ProcessTemplateStageField) => void;
-  updateNode: (stageId: ID, data: Partial<Data>) => void;
+  updateNode: (stageId: ID, data: Partial<StageNodeData>) => void;
   updateNodeField: (stageId: ID, data: ProcessTemplateStageField) => void;
-  deleteNode: (stageId: ID) => void;
+  deleteNode: (id: string) => void;
   setNodes: (nodes: Node[]) => void;
 
   setEdges: (edges: Edge[]) => void;
@@ -52,6 +50,11 @@ const useStageFlowBase = create<RFState>((set, get) => ({
   nodes: [],
   edges: [],
   connectDialog: null,
+  setConnectDialog: (connection) => {
+    set({
+      connectDialog: connection,
+    });
+  },
   closeConnectDialog: () => {
     set({
       connectDialog: null,
@@ -73,22 +76,12 @@ const useStageFlowBase = create<RFState>((set, get) => ({
       edges: applyEdgeChanges(changes, get().edges),
     });
   },
-  onConnect: (connection: Connection) => {
-    if (connection.sourceHandle?.split("-")[0] === "field") {
-      return set({
-        connectDialog: connection,
-      });
-    }
-
-    return get().onConnectSubmit(connection);
-  },
-  onConnectSubmit: (connection) => {
-    console.log(connection);
-
+  onConnect: (connection: Connection | Edge) => {
     set({
       edges: addEdge({ ...connection, type: "stage" }, get().edges),
       connectDialog: null,
     });
+    console.log(get().edges);
   },
 
   addNode: (node) => {
@@ -156,16 +149,15 @@ const useStageFlowBase = create<RFState>((set, get) => ({
   },
   deleteNode: (id) => {
     set({
-      stageIds: get().stageIds.filter((v) => v !== id),
-      nodes: get().nodes.filter((item) => item.data.id !== id),
+      stageIds: get().stageIds.filter((v) => v !== Number(id)),
+      nodes: get().nodes.filter((item) => item.id !== id),
       edges: get().edges.filter(
-        (item) =>
-          item.source !== id.toString() && item.target !== id.toString(),
+        (item) => item.source !== id && item.target !== id,
       ),
     });
   },
   setNodes: (nodes: Node[]) => {
-    set({ nodes });
+    set({ nodes, stageIds: nodes.map((node) => Number(node.id)) });
   },
 
   setEdges: (edges: Edge[]) => {

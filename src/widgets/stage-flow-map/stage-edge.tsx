@@ -7,8 +7,8 @@ import {
   getBezierPath,
   type EdgeProps,
 } from "reactflow";
-import { useStageFlow } from "~/entities/process-template/lib/use-stage-flow";
 import { cn } from "~/shared/lib/utils";
+import { useEdgeOnDelete } from "./use-edge-on-delete";
 
 export const StageEdge = ({
   id,
@@ -20,7 +20,7 @@ export const StageEdge = ({
   targetPosition,
   label,
 }: EdgeProps) => {
-  const deleteEdge = useStageFlow().deleteEdge;
+  const deleteEdge = useEdgeOnDelete();
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -35,7 +35,7 @@ export const StageEdge = ({
       <EdgeLabelRenderer>
         <button
           className={cn(
-            "flex items-center justify-center rounded-full bg-background text-xs text-muted-foreground hover:text-primary",
+            "rounded-full bg-background text-[10px] leading-none text-muted-foreground hover:text-primary",
             label && "px-1",
           )}
           style={{

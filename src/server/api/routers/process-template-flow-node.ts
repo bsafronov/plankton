@@ -24,11 +24,11 @@ export const processTemplateFlowNodeRouter = createTRPCRouter({
   update: publicProcedure
     .input(updateProcessTemplateFlowNodeSchema)
     .mutation(async ({ ctx, input }) => {
-      const { posX, posY, id } = input;
+      const { posX, posY, stageId } = input;
 
       return ctx.db.processTemplateFlowNode.update({
         where: {
-          id,
+          stageId,
         },
         data: {
           posX,
@@ -39,7 +39,7 @@ export const processTemplateFlowNodeRouter = createTRPCRouter({
   delete: publicProcedure.input(z.number()).mutation(async ({ ctx, input }) => {
     return ctx.db.processTemplateFlowNode.delete({
       where: {
-        id: input,
+        stageId: input,
       },
     });
   }),
@@ -48,7 +48,7 @@ export const processTemplateFlowNodeRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return ctx.db.processTemplateFlowNode.findUnique({
         where: {
-          id: input,
+          stageId: input,
         },
       });
     }),
@@ -63,6 +63,15 @@ export const processTemplateFlowNodeRouter = createTRPCRouter({
         },
         skip: page * take - take,
         take: take,
+        include: {
+          stage: {
+            select: {
+              name: true,
+              id: true,
+              fields: true,
+            },
+          },
+        },
       });
     }),
 });
