@@ -25,7 +25,7 @@ const Node = ({ id, data, isConnectable }: NodeProps<Data>) => {
 
   return (
     <div className="min-w-[160px] max-w-[320px] rounded-md border bg-background">
-      <div className="relative flex items-baseline justify-between gap-4 rounded-t bg-muted bg-muted px-2 py-2">
+      <div className="relative flex items-baseline justify-between gap-2 rounded-t bg-muted bg-muted px-2 py-2">
         <Handle
           type="source"
           id={`stage-${id}-left`}
@@ -55,7 +55,7 @@ const Node = ({ id, data, isConnectable }: NodeProps<Data>) => {
           className="top-6 h-2 w-2 border-border bg-amber-400"
           isConnectable={isConnectable}
         />
-        <p className="line-clamp-2 text-sm">{name}</p>
+        <p className="line-clamp-2 hyphens-auto text-sm">{name}</p>
         <div className="flex gap-1">
           <button
             className="text-blue-500 hover:text-blue-400"
