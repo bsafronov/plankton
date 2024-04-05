@@ -1,7 +1,8 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
+import { DeleteDepartment } from "~/features/delete-department";
+import { UpdateDepartment } from "~/features/update-department";
 import { api } from "~/shared/lib/trpc/react";
 import {
   Command,
@@ -26,9 +27,30 @@ export const DepartmentList = () => {
         <CommandList className="p-1">
           <CommandEmpty />
 
-          {data.map(({ id, name }) => (
-            <CommandItem value={name} key={id} asChild>
-              <Link href={`/admin/departments/${id}`}>{name}</Link>
+          {data.map((item) => (
+            <CommandItem value={item.name} key={item.id} asChild>
+              <div className="flex justify-between gap-2">
+                {/* <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <IconButton icon={MoreVertical} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuItem className="justify-between">
+                      Изменить
+                      <Edit className="size-4 text-blue-500" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="justify-between">
+                      Удалить
+                      <Trash className="size-4 text-destructive" />
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu> */}
+                {item.name}
+                <div className="flex gap-2">
+                  <UpdateDepartment {...item} />
+                  <DeleteDepartment departmentId={item.id} />
+                </div>
+              </div>
             </CommandItem>
           ))}
         </CommandList>
