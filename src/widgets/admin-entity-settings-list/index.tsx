@@ -3,6 +3,7 @@ import {
   Cog,
   GraduationCap,
   LayoutList,
+  Package,
   Plane,
   type LucideIcon,
 } from "lucide-react";
@@ -16,6 +17,12 @@ type NavItem = {
 };
 
 const items: NavItem[] = [
+  {
+    title: "Процессы",
+    description: "Просмотр активных процессов",
+    href: "/admin/processes",
+    icon: Package,
+  },
   {
     title: "Шаблоны",
     description: "Настройка этапов, связей и полей процессов",
