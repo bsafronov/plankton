@@ -16,7 +16,6 @@ export const CreateProcessForm = (props?: Props) => {
   const form = useZodForm(createProcessSchema);
   const router = useRouter();
 
-  const ctx = api.useUtils();
   const { data: templates } = api.processTemplate.findMany.useQuery({});
   const { data: products } = api.product.findMany.useQuery({});
 
@@ -24,8 +23,9 @@ export const CreateProcessForm = (props?: Props) => {
     onSuccess: ({ id }) => {
       props?.onSuccess?.();
       router.push(`/processes/${id}`);
+      router.refresh();
       form.reset();
-      void ctx.process.findMany.invalidate();
+
       toast.success("Успешно!");
     },
     onError: (error) => {

@@ -1,3 +1,4 @@
+import { DeleteProcessDialog } from "~/modules/process/ui/delete-process/dialog";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
 
@@ -24,6 +25,9 @@ export default function Page({ params }: Props) {
           },
         ]}
       />
+      <div className="space-y-2 p-4">
+        <DeleteProcessDialog processId={processId} />
+      </div>
     </div>
   );
 }
