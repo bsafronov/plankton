@@ -180,7 +180,7 @@ export const useSelect = <
     index: number,
   ): string => {
     const search = props.search as SelectFlatSearch;
-    const label = props.label as SelectFlatLabel;
+    const label = props.render as SelectFlatLabel;
 
     // If no search passed => return index as value for string|number|object values
     if (!search) {
@@ -264,16 +264,16 @@ export const useSelect = <
   };
 
   const getOptionLabel = (option: SelectOptions[number]): ReactNode => {
-    const label = props.label as SelectFlatLabel;
+    const label = props.render as SelectFlatLabel;
     return getLabelWithBy(option, label);
   };
 
   const isCustomLabelSelected = () => {
-    return typeof props.labelSelected === "function";
+    return typeof props.renderSelected === "function";
   };
 
   const getLabelSelected = (option: SelectOptions[number]): ReactNode => {
-    const labelSelected = props.labelSelected as SelectFlatLabel;
+    const labelSelected = props.renderSelected as SelectFlatLabel;
 
     if (labelSelected) {
       return getLabelWithBy(option, labelSelected);

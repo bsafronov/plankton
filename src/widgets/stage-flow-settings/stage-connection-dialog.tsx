@@ -73,6 +73,8 @@ const StageConnectDialogContent = (connection: Connection | Edge) => {
         control={form.control}
         name="value"
         label="Значение"
+        required
+        description="При каком значении перейти к указанному этапу?"
         render={(props) => {
           const type = templateField?.type;
 

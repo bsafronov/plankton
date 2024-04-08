@@ -11,8 +11,8 @@ export type SelectProps<
   search?: SelectSearch<Options>;
   value?: SelectValue<Options, By, Multi>;
   onChange?: (value: SelectValue<Options, By, Multi>) => void;
-  label?: SelectLabel<Options>;
-  labelSelected?: SelectLabel<Options>;
+  render?: SelectLabel<Options>;
+  renderSelected?: SelectLabel<Options>;
   isLoading?: boolean;
 } & OptionalSelectBy<Options, By> &
   SelectButtonProps;

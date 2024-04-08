@@ -11,7 +11,7 @@ type FormInputProps = React.ComponentPropsWithoutRef<typeof Input> & FormProps;
 export const FormInput = forwardRef<
   React.ElementRef<typeof Input>,
   FormInputProps
->(({ label, description, error, id, ...props }, ref) => {
+>(({ label, description, error, id, required, ...props }, ref) => {
   const { descriptionId, errorId, itemDescribedBy, itemId } = useFormId({
     description,
     error,
@@ -21,7 +21,9 @@ export const FormInput = forwardRef<
 
   return (
     <FormItem>
-      <FormLabel htmlFor={itemId}>{label}</FormLabel>
+      <FormLabel htmlFor={itemId} required={required}>
+        {label}
+      </FormLabel>
       <Input
         ref={ref}
         id={itemId}

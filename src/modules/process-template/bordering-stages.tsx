@@ -8,7 +8,7 @@ type Props = {
 };
 export const BorderingStages = ({ templateId }: Props) => {
   return (
-    <div className="space-y-2 rounded-md border p-3">
+    <div className="space-y-2 rounded-md border p-3 text-sm">
       <StartNode templateId={templateId} />
       <EndNodeList templateId={templateId} />
     </div>

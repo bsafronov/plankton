@@ -1,6 +1,7 @@
 import { createProcessSchema } from "~/modules/process/lib/process-schema";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
 export const processRouter = createTRPCRouter({
   create: publicProcedure
@@ -58,6 +59,7 @@ export const processRouter = createTRPCRouter({
 
       const firstStage = await ctx.db.processStage.findFirst({
         where: {
+          processId: process.id,
           templateStageId: startNode.stageId,
         },
       });
@@ -85,6 +87,15 @@ export const processRouter = createTRPCRouter({
             },
           },
         },
+        product: true,
+      },
+    });
+  }),
+
+  delete: publicProcedure.input(z.number()).mutation(({ ctx, input }) => {
+    return ctx.db.process.delete({
+      where: {
+        id: input,
       },
     });
   }),

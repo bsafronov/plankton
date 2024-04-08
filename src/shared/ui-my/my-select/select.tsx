@@ -1,17 +1,9 @@
 "use client";
 
 import { Check, ChevronsUpDown, Loader2, X } from "lucide-react";
-import { type Ref, forwardRef } from "react";
-import type {
-  SelectBy,
-  SelectByDefault,
-  SelectOptions,
-  SelectProps,
-} from "./types";
-import { useSelect } from "./use-select";
-import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
-import { Button } from "~/shared/ui/button";
+import { forwardRef, type Ref } from "react";
 import { cn } from "~/shared/lib/utils";
+import { Button } from "~/shared/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -19,6 +11,14 @@ import {
   CommandItem,
   CommandList,
 } from "~/shared/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
+import type {
+  SelectBy,
+  SelectByDefault,
+  SelectOptions,
+  SelectProps,
+} from "./types";
+import { useSelect } from "./use-select";
 
 const Select = <
   Options extends SelectOptions,
