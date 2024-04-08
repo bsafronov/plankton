@@ -7,7 +7,7 @@ type Props = {
   process: Awaited<ReturnType<typeof api.process.findMany>>[0];
 };
 
-export const AsideProcessItem = ({ process }: Props) => {
+export const ProcessAsideItem = ({ process }: Props) => {
   return (
     <Link
       href={`/processes/${process.id}`}
