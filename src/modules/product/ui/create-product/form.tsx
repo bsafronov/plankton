@@ -1,13 +1,13 @@
 "use client";
 
-import { useZodForm } from "~/shared/lib/use-form";
-import { createProductSchema } from "../../lib/product-schema";
-import { MyForm } from "~/shared/ui-my/my-form";
-import { MyFormField } from "~/shared/ui-my/my-form-field";
-import { Input } from "~/shared/ui/input";
-import { api } from "~/shared/lib/trpc/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { api } from "~/shared/lib/trpc/react";
+import { useZodForm } from "~/shared/lib/use-form";
+import { MyForm } from "~/shared/ui-my/my-form";
+import { MyFormField } from "~/shared/ui-my/my-form-field";
+import { createProductSchema } from "../../lib/product-schema";
+import { Input } from "~/shared/ui/input";
 
 type Props = {
   onSuccess?: () => void;
@@ -35,9 +35,8 @@ export const CreateProductForm = ({ onSuccess }: Props) => {
       <MyFormField
         control={form.control}
         name="name"
-        required
         label="Название"
-        description="Как называется изделие?"
+        description="Описание"
         render={(props) => <Input {...props} />}
       />
     </MyForm>

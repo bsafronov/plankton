@@ -4,7 +4,7 @@ import {
   createPositionSchema,
   findManyPositionSchema,
   updatePositionSchema,
-} from "~/entities/position/lib/schema";
+} from "~/modules/position/lib/schema";
 
 export const positionRouter = createTRPCRouter({
   create: publicProcedure
