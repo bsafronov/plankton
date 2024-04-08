@@ -229,8 +229,8 @@ model Process {
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
-    currentStage   ProcessStage @relation("currentStage", fields: [currentStageId], references: [id])
-    currentStageId Int          @unique
+    currentStage   ProcessStage? @relation("currentStage", fields: [currentStageId], references: [id])
+    currentStageId Int?          @unique
 
     template   ProcessTemplate @relation(fields: [templateId], references: [id])
     templateId Int
@@ -241,7 +241,7 @@ model Process {
 
 model ProcessField {
     id        Int      @id @default(autoincrement())
-    value     String
+    value     String?
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
