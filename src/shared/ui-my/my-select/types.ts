@@ -19,7 +19,7 @@ export type SelectProps<
 
 type SelectButtonProps = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
-  "onBlur" | "disabled" | "name"
+  "onBlur" | "disabled" | "name" | "id"
 >;
 
 export type UseSelectProps<
