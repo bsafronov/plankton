@@ -43,7 +43,7 @@ const Select = <
     hasValue,
     onDelete,
   } = useSelect(props);
-  const { disabled, onBlur, name, isLoading } = props;
+  const { id, disabled, onBlur, name, isLoading } = props;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -53,6 +53,7 @@ const Select = <
           onBlur={onBlur}
           name={name}
           variant={"outline"}
+          id={id}
           className={cn(
             "group flex h-auto min-h-10 w-full items-stretch p-0 text-sm font-normal transition-none hover:bg-muted",
           )}
