@@ -1,5 +1,5 @@
-import { PositionList } from "~/entities/position/ui/position-list";
-import { CreatePosition } from "~/features/create-position";
+import { CreatePositionDialog } from "~/modules/position/ui/create-position/dialog";
+import { PositionSearchableList } from "~/modules/position/ui/position-searchable-list";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
 
 export default function Page() {
@@ -18,8 +18,8 @@ export default function Page() {
         ]}
       />
       <div className="space-y-4 p-4">
-        <CreatePosition />
-        <PositionList />
+        <CreatePositionDialog />
+        <PositionSearchableList />
       </div>
     </>
   );
