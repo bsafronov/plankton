@@ -18,6 +18,8 @@ export const CreateProcessForm = (props?: Props) => {
 
   const ctx = api.useUtils();
   const { data: templates } = api.processTemplate.findMany.useQuery({});
+  const { data: products } = api.product.findMany.useQuery({});
+
   const { mutate: createProcess, isPending } = api.process.create.useMutation({
     onSuccess: ({ id }) => {
       props?.onSuccess?.();
@@ -40,6 +42,14 @@ export const CreateProcessForm = (props?: Props) => {
       submitText="Создать"
       isLoading={isPending}
     >
+      <MyFormField
+        control={form.control}
+        name="productId"
+        required
+        label="Изделие"
+        description="По какому изделию начать процесс?"
+        render={(props) => <MySelect options={products} by="id" {...props} />}
+      />
       <MyFormField
         control={form.control}
         name="templateId"

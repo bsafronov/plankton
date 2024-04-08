@@ -1,7 +1,21 @@
-import { Building, Cog, GraduationCap, LayoutList } from "lucide-react";
+import {
+  Building,
+  Cog,
+  GraduationCap,
+  LayoutList,
+  Plane,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 
-const items = [
+type NavItem = {
+  title: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+};
+
+const items: NavItem[] = [
   {
     title: "Шаблоны",
     description: "Настройка этапов, связей и полей процессов",
@@ -26,6 +40,12 @@ const items = [
       "Настройка предустановленных списков для использования в селекторах",
     href: "/admin/enums",
     icon: LayoutList,
+  },
+  {
+    title: "Изделия",
+    description: "Настройка изделий, производимых предприятием",
+    href: "/admin/products",
+    icon: Plane,
   },
 ];
 

@@ -6,7 +6,7 @@ export const processRouter = createTRPCRouter({
   create: publicProcedure
     .input(createProcessSchema)
     .mutation(async ({ ctx, input }) => {
-      const { templateId } = input;
+      const { templateId, productId } = input;
 
       const startNode = await ctx.db.processTemplateFlowNode.findFirst({
         where: {
@@ -29,6 +29,7 @@ export const processRouter = createTRPCRouter({
 
       const process = await ctx.db.process.create({
         data: {
+          productId,
           templateId,
         },
         include: {

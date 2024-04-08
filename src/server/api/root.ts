@@ -10,6 +10,7 @@ import { departmentRouter } from "./routers/department";
 import { processTemplateFlowNodeRouter } from "./routers/process-template-flow-node";
 import { processTemplateFlowEdgeRouter } from "./routers/process-template-flow-edge";
 import { processRouter } from "./routers/process";
+import { productRouter } from "./routers/product";
 
 /**
  * This is the primary router for your server.
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   enumItem: enumItemRouter,
   department: departmentRouter,
   position: positionRouter,
+  product: productRouter,
   processTemplate: processTemplateRouter,
   processTemplateField: processTemplateFieldRouter,
   processTemplateStage: processTemplateStageRouter,
