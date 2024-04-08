@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ProcessTemplateFieldList } from "~/entities/process-template/ui/process-template-field-list";
 import { CreateProcessTemplateField } from "~/features/create-process-template-field";
+import { BorderingStages } from "~/modules/process-template/bordering-stages";
 import { api } from "~/shared/lib/trpc/react";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
@@ -46,6 +47,7 @@ export default function Page({ params }: Props) {
           </Button>
         </div>
         <ProcessTemplateFieldList templateId={templateId} />
+        <BorderingStages templateId={templateId} />
       </div>
     </>
   );

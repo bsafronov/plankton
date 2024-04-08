@@ -31,21 +31,6 @@ export const processTemplateFlowEdgeRouter = createTRPCRouter({
         },
       });
     }),
-  // update: publicProcedure
-  //   .input(updateProcessTemplateFlowEdgeSchema)
-  //   .mutation(async ({ ctx, input }) => {
-  //     const { posX, posY, id } = input;
-
-  //     return ctx.db.processTemplateFlowNode.update({
-  //       where: {
-  //         id,
-  //       },
-  //       data: {
-  //         posX,
-  //         posY,
-  //       },
-  //     });
-  //   }),
   delete: publicProcedure.input(z.number()).mutation(async ({ ctx, input }) => {
     return ctx.db.processTemplateFlowEdge.delete({
       where: {

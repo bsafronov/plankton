@@ -74,4 +74,41 @@ export const processTemplateFlowNodeRouter = createTRPCRouter({
         },
       });
     }),
+  getStartNode: publicProcedure
+    .input(z.object({ templateId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const { templateId } = input;
+      return ctx.db.processTemplateFlowNode.findFirst({
+        where: {
+          templateId,
+          targetFlowEdges: {
+            none: {},
+          },
+        },
+        include: {
+          stage: true,
+        },
+      });
+    }),
+  getEndNodes: publicProcedure
+    .input(
+      z.object({
+        templateId: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { templateId } = input;
+
+      return ctx.db.processTemplateFlowNode.findMany({
+        where: {
+          templateId,
+          sourceFlowEdges: {
+            none: {},
+          },
+        },
+        include: {
+          stage: true,
+        },
+      });
+    }),
 });
