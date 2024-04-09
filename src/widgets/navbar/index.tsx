@@ -45,12 +45,7 @@ export const Navbar = () => {
             <Tooltip key={href}>
               <TooltipTrigger asChild>
                 <Button
-                  variant={
-                    (href !== "/" && pathname.includes(href)) ||
-                    (pathname === href && href === "/")
-                      ? "secondary"
-                      : "ghost"
-                  }
+                  variant={pathname === href ? "secondary" : "ghost"}
                   size={"icon"}
                   asChild
                   key={href}
