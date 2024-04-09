@@ -1,5 +1,6 @@
 "use client";
 
+import { links } from "~/modules/_app/lib/links";
 import { api } from "~/shared/lib/trpc/react";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
@@ -19,18 +20,9 @@ export default function Page({ params }: Props) {
     <>
       <MyBreadcrumb
         items={[
-          {
-            title: "Панель управления",
-            href: "/admin",
-          },
-          {
-            title: "Отделы",
-            href: "/admin/departments",
-          },
-          {
-            title: data?.name,
-            href: `/admin/departments/${data?.id}`,
-          },
+          links.adminPanel.index,
+          links.adminPanel.departments.index,
+          links.adminPanel.departments.id(data?.name, departmentId),
         ]}
       />
     </>
