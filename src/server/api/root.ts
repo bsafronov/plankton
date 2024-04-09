@@ -11,6 +11,7 @@ import { processTemplateFlowNodeRouter } from "./routers/process-template-flow-n
 import { processTemplateFlowEdgeRouter } from "./routers/process-template-flow-edge";
 import { processRouter } from "./routers/process";
 import { productRouter } from "./routers/product";
+import { processFieldRouter } from "./routers/process-field";
 
 /**
  * This is the primary router for your server.
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
   processTemplateFlowNode: processTemplateFlowNodeRouter,
   processTemplateFlowEdge: processTemplateFlowEdgeRouter,
   process: processRouter,
+  processField: processFieldRouter,
 });
 
 // export type definition of API
