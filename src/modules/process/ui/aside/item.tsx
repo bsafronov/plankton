@@ -14,9 +14,7 @@ export const ProcessAsideItem = ({ process }: Props) => {
       className="flex px-4 py-1.5 text-sm hover:bg-muted/50"
     >
       {process.product.name}&nbsp;
-      <span className="text-muted-foreground">
-        #{process.currentStage?.templateStage.name}
-      </span>
+      <span className="text-muted-foreground">#{process.id}</span> &nbsp;
     </Link>
   );
 };

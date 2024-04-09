@@ -1,3 +1,4 @@
+import { links } from "~/modules/_app/lib/links";
 import { DeleteProcessDialog } from "~/modules/process/ui/delete-process/dialog";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
@@ -15,14 +16,8 @@ export default function Page({ params }: Props) {
     <div>
       <MyBreadcrumb
         items={[
-          {
-            title: "Процессы",
-            href: "/processes",
-          },
-          {
-            title: processId,
-            href: `/processes/${processId}`,
-          },
+          links.processes.index,
+          links.processes.id(processId, processId),
         ]}
       />
       <div className="space-y-2 p-4">

@@ -42,6 +42,7 @@ export const FormSelectWithoutRef = (
   );
 };
 
+// @eslint-ignore-next-line
 // @ts-expect-error Type instantiation is excessively deep and possibly infinite.
 export const FormSelect = forwardRef(FormSelectWithoutRef) as <
   Options extends SelectOptions,

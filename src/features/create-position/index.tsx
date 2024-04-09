@@ -7,7 +7,7 @@ import { useBoolean } from "usehooks-ts";
 import {
   type CreatePositionSchema,
   createPositionSchema,
-} from "~/entities/position/lib/schema";
+} from "~/modules/position/lib/schema";
 import { api } from "~/shared/lib/trpc/react";
 import { MyDialog } from "~/shared/ui-my/my-dialog";
 import { MyForm } from "~/shared/ui-my/my-form";

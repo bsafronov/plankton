@@ -79,7 +79,7 @@ export const CreateProcessTemplateField = ({ templateId }: Props) => {
             <MySelect
               options={fieldTypes}
               by="value"
-              label="label"
+              render={"label"}
               onChange={(v) => {
                 form.setValue("enumId", null);
                 onChange(v);
