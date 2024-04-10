@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { links } from "~/modules/_app/lib/links";
+import { DeleteProcessDialog } from "~/modules/process/ui/delete-process/dialog";
 import { db } from "~/server/db";
 import { parseIds } from "~/shared/lib/utils";
 import { MyBreadcrumb } from "~/shared/ui-my/my-breadcrumb";
@@ -113,6 +114,7 @@ export default async function Page({ params }: Props) {
             </TableBody>
           </Table>
         </div>
+        <DeleteProcessDialog processId={processId} />
       </div>
     </>
   );
