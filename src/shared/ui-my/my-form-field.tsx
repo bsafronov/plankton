@@ -81,7 +81,7 @@ const placementList: MyFormFieldPlacementList = {
     </FormItem>
   ),
   checkbox: ({ children, className, description, label, required }) => (
-    <FormItem className={cn("flex gap-2", className)}>
+    <FormItem className={cn("flex gap-2 space-y-0", className)}>
       <FormControl>{children}</FormControl>
       <div className="flex flex-col">
         {label && <FormLabel required={required}>{label}</FormLabel>}
