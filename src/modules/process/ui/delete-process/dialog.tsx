@@ -13,7 +13,7 @@ export const DeleteProcessDialog = ({ processId }: Props) => {
   const router = useRouter();
   const { mutate: deleteProcess } = api.process.delete.useMutation({
     onSuccess: () => {
-      router.push("/processes");
+      router.push("/admin/processes");
       router.refresh();
     },
   });

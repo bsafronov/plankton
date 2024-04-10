@@ -194,8 +194,8 @@ model ProcessTemplateStageField {
     stage   ProcessTemplateStage @relation(fields: [stageId], references: [id])
     stageId Int
 
-    flowEdges          ProcessTemplateFlowEdge[]
-    processStageFields ProcessStageField[]
+    flowEdges ProcessTemplateFlowEdge[]
+    // processStageFields ProcessStageField[]
 
     @@unique([name, stageId])
 }
@@ -263,6 +263,8 @@ model ProcessField {
 
     process   Process @relation(fields: [processId], references: [id], onDelete: Cascade)
     processId Int
+
+    // stageFields ProcessStageField[]
 }
 
 model ProcessStage {
@@ -277,19 +279,12 @@ model ProcessStage {
     processId Int
 
     processCurrentStage Process? @relation("currentStage")
-
-    ProcessStageField ProcessStageField[]
 }
 
-model ProcessStageField {
-    id        Int      @id @default(autoincrement())
-    value     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now()) @updatedAt
+model ProcessComment {
+    id Int @id @default(autoincrement())
+}
 
-    templateStageField   ProcessTemplateStageField @relation(fields: [templateStageFieldId], references: [id])
-    templateStageFieldId Int
-
-    stage   ProcessStage @relation(fields: [stageId], references: [id])
-    stageId Int
+model ProcessLog {
+    id Int @id @default(autoincrement())
 }
